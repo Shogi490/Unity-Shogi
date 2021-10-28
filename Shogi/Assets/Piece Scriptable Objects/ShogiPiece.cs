@@ -15,13 +15,21 @@ public class ShogiPiece : ScriptableObject
 
 public enum MovementOption
 {
-    King,
-    GoldGeneral,
-    SilverGeneral,
-    Knight,
-    Lance,
-    Bishop,
-    Rook,
-    Pawn,
+   BKing,
+    BGoldGeneral,
+    BSilverGeneral,
+    BKnight,
+    BLance,
+    BBishop,
+    BRook,
+    BPawn,
+    WKing,
+    WGoldGeneral,
+    WSilverGeneral,
+    WKnight,
+    WLance,
+    WBishop,
+    WRook,
+    WPawn,
     None
 }

@@ -44,8 +44,8 @@ public class GameController : MonoBehaviour
         // set the player's initial pieces
         for(int i = 0; i < PlayerPieces.Length; i++)
         {
-            int row = i / columns;
-            int column = i % columns;
+            int row = rows - (1 + (i / columns));
+            int column = columns - (1 + (i % columns));
             tiles[row, column].SetShogiPiece(PlayerPieces[i]);
             tiles[row, column].isPlayerOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
         }
@@ -53,9 +53,10 @@ public class GameController : MonoBehaviour
         // set the enemy's initial pieces
         for (int i = 0; i < EnemyPieces.Length; i++)
         {
-            int row = rows - (1 + (i / columns));
-            int column = columns - (1 + (i % columns));
+            int row = i / columns;
+            int column = i % columns;
             tiles[row, column].SetShogiPiece(EnemyPieces[i]);
+            ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
         }
     }
 
@@ -171,7 +172,7 @@ public class GameController : MonoBehaviour
         {
             switch (option)
             {
-                case MovementOption.King:
+                case MovementOption.BKing:
                     moveableTiles.Add(_getValidTilesRelative(-1, 1)); // left column
                     moveableTiles.Add(_getValidTilesRelative(-1, 0));
                     moveableTiles.Add(_getValidTilesRelative(-1, -1));
@@ -181,7 +182,17 @@ public class GameController : MonoBehaviour
                     moveableTiles.Add(_getValidTilesRelative(1, 0));
                     moveableTiles.Add(_getValidTilesRelative(1, -1));
                     break;
-                case MovementOption.GoldGeneral:
+                case MovementOption.WKing:
+                    moveableTiles.Add(_getValidTilesRelative(-1, -1)); // left column
+                    moveableTiles.Add(_getValidTilesRelative(-1, 0));
+                    moveableTiles.Add(_getValidTilesRelative(-1, 1));
+                    moveableTiles.Add(_getValidTilesRelative(0, 1)); // middle column
+                    moveableTiles.Add(_getValidTilesRelative(0, -1));
+                    moveableTiles.Add(_getValidTilesRelative(1, 1)); // right column
+                    moveableTiles.Add(_getValidTilesRelative(1, 0));
+                    moveableTiles.Add(_getValidTilesRelative(1, -1));
+                    break;
+                case MovementOption.BGoldGeneral:
                     moveableTiles.Add(_getValidTilesRelative(-1, 1)); // left column
                     moveableTiles.Add(_getValidTilesRelative(-1, 0));
                     moveableTiles.Add(_getValidTilesRelative(0, 1)); // middle column
@@ -189,25 +200,54 @@ public class GameController : MonoBehaviour
                     moveableTiles.Add(_getValidTilesRelative(1, 1)); // right column
                     moveableTiles.Add(_getValidTilesRelative(1, 0));
                     break;
-                case MovementOption.SilverGeneral:
+                case MovementOption.WGoldGeneral:
+                    moveableTiles.Add(_getValidTilesRelative(-1, -1)); // left column
+                    moveableTiles.Add(_getValidTilesRelative(-1, 0));
+                    moveableTiles.Add(_getValidTilesRelative(0, -1)); // middle column
+                    moveableTiles.Add(_getValidTilesRelative(0, 1));
+                    moveableTiles.Add(_getValidTilesRelative(1, -1)); // right column
+                    moveableTiles.Add(_getValidTilesRelative(1, 0));
+                    break;
+                case MovementOption.BSilverGeneral:
                     moveableTiles.Add(_getValidTilesRelative(-1, 1)); // left column
                     moveableTiles.Add(_getValidTilesRelative(-1, -1));
                     moveableTiles.Add(_getValidTilesRelative(0, 1)); // middle column
                     moveableTiles.Add(_getValidTilesRelative(1, 1)); // right column
                     moveableTiles.Add(_getValidTilesRelative(1, -1));
                     break;
-                case MovementOption.Knight:
+                case MovementOption.WSilverGeneral:
+                    moveableTiles.Add(_getValidTilesRelative(-1, -1)); // left column
+                    moveableTiles.Add(_getValidTilesRelative(-1, 1));
+                    moveableTiles.Add(_getValidTilesRelative(0, -1)); // middle column
+                    moveableTiles.Add(_getValidTilesRelative(1, -1)); // right column
+                    moveableTiles.Add(_getValidTilesRelative(1, 1));
+                    break;
+                case MovementOption.BKnight:
                     moveableTiles.Add(_getValidTilesRelative(-1, 2)); // left-up-up
                     moveableTiles.Add(_getValidTilesRelative(1, 2)); // right-up-up
                     break;
-                case MovementOption.Lance:
+                case MovementOption.WKnight:
+                    moveableTiles.Add(_getValidTilesRelative(-1, -2)); // left-up-up
+                    moveableTiles.Add(_getValidTilesRelative(1, -2)); // right-up-up
+                    break;
+                case MovementOption.BLance:
                     bool continueProbing = true;
-                    for(int i = 1; continueProbing == true; i++)
+                    for (int i = 1; continueProbing == true; i++)
                     {
-                        continueProbing = shouldProbeAfterMoving(_getValidTilesRelative(0,i));
+                        continueProbing = shouldProbeAfterMoving(_getValidTilesRelative(0, i));
                     }
                     break;
-                case MovementOption.Bishop:
+                case MovementOption.WLance:
+                    bool continueProbing1 = true;
+                    for (int i = 1; continueProbing1 == true; i++)
+                    {
+                        continueProbing1 = shouldProbeAfterMoving(_getValidTilesRelative(0, -i));
+                    }
+                    break;
+
+
+                case MovementOption.BBishop:
+                case MovementOption.WBishop:
                     // the following four bools are flags that track whether a diagonal is sufficient
                     bool leftUp = true;
                     bool rightUp = true;
@@ -222,7 +262,10 @@ public class GameController : MonoBehaviour
                         if (rightDown == true) rightDown = shouldProbeAfterMoving(_getValidTilesRelative(i, -i));
                     }
                     break;
-                case MovementOption.Rook:
+
+
+                case MovementOption.WRook:
+                case MovementOption.BRook:
                     // the following four bools are flags that track whether an orthogonal is sufficient
                     bool left = true;
                     bool right = true;
@@ -237,8 +280,13 @@ public class GameController : MonoBehaviour
                         if (down == true) down = shouldProbeAfterMoving(_getValidTilesRelative(0, -i));
                     }
                     break;
-                case MovementOption.Pawn:
+
+
+                case MovementOption.BPawn:
                     moveableTiles.Add(_getValidTilesRelative(0, 1));
+                    break;
+                case MovementOption.WPawn:
+                    moveableTiles.Add(_getValidTilesRelative(0, -1));
                     break;
                 default:
                     break;
