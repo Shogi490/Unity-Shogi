@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ShogiPiece empty = null;
 
+    public static bool PlayerIsWhite = true;
+
     public Tile TilePrefab;
 
     private Tile[,] tiles;
@@ -35,7 +37,7 @@ public class GameController : MonoBehaviour
             for (int j = 0; j < columns; j++)
             {
                 Tile newTile = Instantiate(TilePrefab, transform);
-                newTile.coordinates = new int2(i, j);
+                newTile.Coordinates = new int2(i, j);
                 newTile.OnPlayerClicked = _onTileSelected;
                 tiles[i, j] = newTile;
             }
@@ -47,7 +49,8 @@ public class GameController : MonoBehaviour
             int row = rows - (1 + (i / columns));
             int column = columns - (1 + (i % columns));
             tiles[row, column].SetShogiPiece(PlayerPieces[i]);
-            tiles[row, column].isPlayerOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
+            tiles[row, column].IsPlayerOwned = (tiles[row, column].ShogiPiece == empty) ? false : true; // if the given piece is empty, don't assign to Player
+            tiles[row, column].RefreshDisplay();
         }
 
         // set the enemy's initial pieces
@@ -56,6 +59,7 @@ public class GameController : MonoBehaviour
             int row = i / columns;
             int column = i % columns;
             tiles[row, column].SetShogiPiece(EnemyPieces[i]);
+            tiles[row, column].RefreshDisplay();
             ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
         }
     }
@@ -66,11 +70,11 @@ public class GameController : MonoBehaviour
     /// <param name="newCoord"></param>
     private void _onTileSelected(int2 newCoord)
     {
-        Debug.Log(newCoord);
         Tile newTile = _getTileFromCoord(newCoord);
         if (newTile != null)
         {
-            if(selectedCoord.x == newCoord.x && selectedCoord.y == newCoord.y)
+            Debug.Log(newCoord);
+            if (selectedCoord.x == newCoord.x && selectedCoord.y == newCoord.y)
             {
                 _unselectTile(); // (Case 1): Re-selected the same tile: Only Unselect
             } else
@@ -92,7 +96,7 @@ public class GameController : MonoBehaviour
             // there is a selected Tile
             _forMovableTilesFrom(selectedTile, (Tile oldMovable) =>
             {
-                oldMovable.unhighlight();
+                oldMovable.Unhighlight();
                 oldMovable.OnPlayerClicked = _onTileSelected;
             });
         }
@@ -105,19 +109,19 @@ public class GameController : MonoBehaviour
     /// <param name="selectedTile">The Tile that was clicked</param>
     private void _selectTile(Tile selectedTile)
     {
-        if (_coordInBounds(selectedTile.coordinates) && selectedTile.isPlayerOwned)
+        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned)
         {
             // highlight movable Tiles
             _forMovableTilesFrom(selectedTile, (Tile newMovable) =>
             {
-                newMovable.highlight();
+                newMovable.Highlight();
                 newMovable.OnPlayerClicked = (int2 highlightedCoord) =>
                 {
                     _unselectTile(); // should unhighlight newMovable.
-                    _movePiece(selectedTile.coordinates, highlightedCoord);
+                    _movePiece(selectedTile.Coordinates, highlightedCoord);
                 };
             });
-            selectedCoord = selectedTile.coordinates;
+            selectedCoord = selectedTile.Coordinates;
         }
     }
 
@@ -136,10 +140,10 @@ public class GameController : MonoBehaviour
             Tile fromTile = _getTileFromCoord(from);
             Tile toTile = _getTileFromCoord(to);
 
+            toTile.IsPlayerOwned = true;
             toTile.SetShogiPiece(fromTile.ShogiPiece);
-            toTile.isPlayerOwned = true;
+            fromTile.IsPlayerOwned = false;
             fromTile.SetShogiPiece(empty);
-            fromTile.isPlayerOwned = false;
         }
     }
 
@@ -150,10 +154,7 @@ public class GameController : MonoBehaviour
     /// <param name="callback"></param>
     private void _forMovableTilesFrom(Tile targetTile, System.Action<Tile> callback)
     {
-        // get the ShogiPiece located at the coordinate
-        ShogiPiece targetPiece = targetTile.ShogiPiece;
-
-        // get the tiles for which the piece can move to. Remember to account for which pieces are capturable!!
+        // get the tiles for which the piece can move to.
         // duplicates are OK, because they will just be re-highlighted.
         List<Tile> moveableTiles = _getMovableTilesFrom(targetTile);
 
@@ -166,13 +167,13 @@ public class GameController : MonoBehaviour
 
     private List<Tile> _getMovableTilesFrom(Tile targetTile)
     {
-        int2 coord = targetTile.coordinates;
+        int2 coord = targetTile.Coordinates;
         List<Tile> moveableTiles = new List<Tile>();
         foreach(MovementOption option in targetTile.ShogiPiece.movementOptions)
         {
             switch (option)
             {
-                case MovementOption.BKing:
+                case MovementOption.King:
                     moveableTiles.Add(_getValidTilesRelative(-1, 1)); // left column
                     moveableTiles.Add(_getValidTilesRelative(-1, 0));
                     moveableTiles.Add(_getValidTilesRelative(-1, -1));
@@ -182,17 +183,7 @@ public class GameController : MonoBehaviour
                     moveableTiles.Add(_getValidTilesRelative(1, 0));
                     moveableTiles.Add(_getValidTilesRelative(1, -1));
                     break;
-                case MovementOption.WKing:
-                    moveableTiles.Add(_getValidTilesRelative(-1, -1)); // left column
-                    moveableTiles.Add(_getValidTilesRelative(-1, 0));
-                    moveableTiles.Add(_getValidTilesRelative(-1, 1));
-                    moveableTiles.Add(_getValidTilesRelative(0, 1)); // middle column
-                    moveableTiles.Add(_getValidTilesRelative(0, -1));
-                    moveableTiles.Add(_getValidTilesRelative(1, 1)); // right column
-                    moveableTiles.Add(_getValidTilesRelative(1, 0));
-                    moveableTiles.Add(_getValidTilesRelative(1, -1));
-                    break;
-                case MovementOption.BGoldGeneral:
+                case MovementOption.GoldGeneral:
                     moveableTiles.Add(_getValidTilesRelative(-1, 1)); // left column
                     moveableTiles.Add(_getValidTilesRelative(-1, 0));
                     moveableTiles.Add(_getValidTilesRelative(0, 1)); // middle column
@@ -200,54 +191,25 @@ public class GameController : MonoBehaviour
                     moveableTiles.Add(_getValidTilesRelative(1, 1)); // right column
                     moveableTiles.Add(_getValidTilesRelative(1, 0));
                     break;
-                case MovementOption.WGoldGeneral:
-                    moveableTiles.Add(_getValidTilesRelative(-1, -1)); // left column
-                    moveableTiles.Add(_getValidTilesRelative(-1, 0));
-                    moveableTiles.Add(_getValidTilesRelative(0, -1)); // middle column
-                    moveableTiles.Add(_getValidTilesRelative(0, 1));
-                    moveableTiles.Add(_getValidTilesRelative(1, -1)); // right column
-                    moveableTiles.Add(_getValidTilesRelative(1, 0));
-                    break;
-                case MovementOption.BSilverGeneral:
+                case MovementOption.SilverGeneral:
                     moveableTiles.Add(_getValidTilesRelative(-1, 1)); // left column
                     moveableTiles.Add(_getValidTilesRelative(-1, -1));
                     moveableTiles.Add(_getValidTilesRelative(0, 1)); // middle column
                     moveableTiles.Add(_getValidTilesRelative(1, 1)); // right column
                     moveableTiles.Add(_getValidTilesRelative(1, -1));
                     break;
-                case MovementOption.WSilverGeneral:
-                    moveableTiles.Add(_getValidTilesRelative(-1, -1)); // left column
-                    moveableTiles.Add(_getValidTilesRelative(-1, 1));
-                    moveableTiles.Add(_getValidTilesRelative(0, -1)); // middle column
-                    moveableTiles.Add(_getValidTilesRelative(1, -1)); // right column
-                    moveableTiles.Add(_getValidTilesRelative(1, 1));
-                    break;
-                case MovementOption.BKnight:
+                case MovementOption.Knight:
                     moveableTiles.Add(_getValidTilesRelative(-1, 2)); // left-up-up
                     moveableTiles.Add(_getValidTilesRelative(1, 2)); // right-up-up
                     break;
-                case MovementOption.WKnight:
-                    moveableTiles.Add(_getValidTilesRelative(-1, -2)); // left-up-up
-                    moveableTiles.Add(_getValidTilesRelative(1, -2)); // right-up-up
-                    break;
-                case MovementOption.BLance:
+                case MovementOption.Lance:
                     bool continueProbing = true;
                     for (int i = 1; continueProbing == true; i++)
                     {
                         continueProbing = shouldProbeAfterMoving(_getValidTilesRelative(0, i));
                     }
                     break;
-                case MovementOption.WLance:
-                    bool continueProbing1 = true;
-                    for (int i = 1; continueProbing1 == true; i++)
-                    {
-                        continueProbing1 = shouldProbeAfterMoving(_getValidTilesRelative(0, -i));
-                    }
-                    break;
-
-
-                case MovementOption.BBishop:
-                case MovementOption.WBishop:
+                case MovementOption.Bishop:
                     // the following four bools are flags that track whether a diagonal is sufficient
                     bool leftUp = true;
                     bool rightUp = true;
@@ -262,10 +224,7 @@ public class GameController : MonoBehaviour
                         if (rightDown == true) rightDown = shouldProbeAfterMoving(_getValidTilesRelative(i, -i));
                     }
                     break;
-
-
-                case MovementOption.WRook:
-                case MovementOption.BRook:
+                case MovementOption.Rook:
                     // the following four bools are flags that track whether an orthogonal is sufficient
                     bool left = true;
                     bool right = true;
@@ -280,13 +239,8 @@ public class GameController : MonoBehaviour
                         if (down == true) down = shouldProbeAfterMoving(_getValidTilesRelative(0, -i));
                     }
                     break;
-
-
-                case MovementOption.BPawn:
+                case MovementOption.Pawn:
                     moveableTiles.Add(_getValidTilesRelative(0, 1));
-                    break;
-                case MovementOption.WPawn:
-                    moveableTiles.Add(_getValidTilesRelative(0, -1));
                     break;
                 default:
                     break;
@@ -307,7 +261,7 @@ public class GameController : MonoBehaviour
             if (tile == null || tile.ShogiPiece != empty)
             {
                 // if tile is populated with enemy piece, the tile is capturable
-                if (tile != null && tile.isPlayerOwned == false) moveableTiles.Add(tile);
+                if (tile != null && tile.IsPlayerOwned == false) moveableTiles.Add(tile);
                 // regardless, since it is populated (or null), should stop probing
                 return false;
             }
@@ -317,10 +271,11 @@ public class GameController : MonoBehaviour
         }
 
         // Just makes it easier to read the returned value. Keep in mind that _getTileFromCoord will return null if out of bounds!
-        Tile _getValidTilesRelative(int x, int y)
+        Tile _getValidTilesRelative(int dx, int dy)
         {
-            Tile relativeTile = _getTileFromCoord(new int2(coord.x + y, coord.y + x));
-            if (relativeTile != null && relativeTile.isPlayerOwned == false) return relativeTile;
+            int colorDirectionMultiplier = (targetTile.IsPlayerOwned) ? -1 : 1;
+            Tile relativeTile = _getTileFromCoord(new int2(coord.x + (dy * colorDirectionMultiplier), coord.y + dx));
+            if (relativeTile != null && relativeTile.IsPlayerOwned == false) return relativeTile;
             return null;
         }
     }

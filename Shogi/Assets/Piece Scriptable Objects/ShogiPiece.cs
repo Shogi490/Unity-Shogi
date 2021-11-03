@@ -6,7 +6,8 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "ShogiPiece")]
 public class ShogiPiece : ScriptableObject
 {
-    public Sprite Sprite;
+    public Sprite WSprite;
+    public Sprite BSprite;
     public string Name;
     public int Value;
     public MovementOption[] movementOptions;
@@ -15,21 +16,13 @@ public class ShogiPiece : ScriptableObject
 
 public enum MovementOption
 {
-   BKing,
-    BGoldGeneral,
-    BSilverGeneral,
-    BKnight,
-    BLance,
-    BBishop,
-    BRook,
-    BPawn,
-    WKing,
-    WGoldGeneral,
-    WSilverGeneral,
-    WKnight,
-    WLance,
-    WBishop,
-    WRook,
-    WPawn,
+    King,
+    GoldGeneral,
+    SilverGeneral,
+    Knight,
+    Lance,
+    Bishop,
+    Rook,
+    Pawn,
     None
 }
