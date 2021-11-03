@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Lance
   Value: 3
   movementOptions: 04000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: 317c574b64c141046890d852cf296a60, type: 2}

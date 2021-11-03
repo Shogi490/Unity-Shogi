@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Kight
   Value: 3
   movementOptions: 03000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: 0bac7ca8ae748d647b10030244dcaab6, type: 2}

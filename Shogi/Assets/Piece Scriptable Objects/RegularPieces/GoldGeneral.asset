@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Gold General
   Value: 5
   movementOptions: 01000000
+  Promotable: 0
   PromotedPiece: {fileID: 11400000}

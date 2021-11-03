@@ -120,16 +120,12 @@ public class GameController : MonoBehaviour
                     _unselectTile(); // should unhighlight everything that was previously highlighted.
                     if (_movePiece(selectedTile.Coordinates, highlightedCoord))
                     {
-                        // TODO: prompt for promotion
                         // check if should promote
                         Tile promotionCandidate = tiles[highlightedCoord.x, highlightedCoord.y];
                         if (_tileCanPromote(promotionCandidate))
                         {
                             // prompt for promotion
-                            // TODO: prompt for promotion (for now we will auto-promote)
-
-                            // promote
-                            promotionCandidate.PromotePiece();
+                            promotionCandidate.PromptForPromotion();
                         }
                     }
                 };
