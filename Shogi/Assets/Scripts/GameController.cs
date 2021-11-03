@@ -118,10 +118,41 @@ public class GameController : MonoBehaviour
                 newMovable.OnPlayerClicked = (int2 highlightedCoord) =>
                 {
                     _unselectTile(); // should unhighlight everything that was previously highlighted.
-                    _movePiece(selectedTile.Coordinates, highlightedCoord);
+                    if (_movePiece(selectedTile.Coordinates, highlightedCoord))
+                    {
+                        // TODO: prompt for promotion
+                        // check if should promote
+                        Tile promotionCandidate = tiles[highlightedCoord.x, highlightedCoord.y];
+                        if (_tileCanPromote(promotionCandidate))
+                        {
+                            // prompt for promotion
+                            // TODO: prompt for promotion (for now we will auto-promote)
+
+                            // promote
+                            promotionCandidate.PromotePiece();
+                        }
+                    }
                 };
             });
             selectedCoord = selectedTile.Coordinates;
+        }
+    }
+
+    /// <summary>
+    /// determines whether the piece at the given Tile can be promoted
+    /// </summary>
+    /// <param name="newlyMoved"></param>
+    /// <returns>Whether or not the piece at the Tile can be promoted</returns>
+    private bool _tileCanPromote(Tile newlyMoved)
+    {
+        if(newlyMoved.IsPlayerOwned)
+        {
+            // check the top 3 rows
+            return newlyMoved.Coordinates.x < 3;
+        } else
+        {
+            // check the bottom 3 rows
+            return newlyMoved.Coordinates.x >= rows - 3;
         }
     }
 

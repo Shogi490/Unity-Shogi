@@ -87,4 +87,19 @@ public class Tile : MonoBehaviour
             Image.color = Color.white;
         }
     }
+
+    /// <summary>
+    /// Promotes the Shogi Piece if the piece is promotable
+    /// </summary>
+    /// <remarks>
+    /// Doesn't check whether or not the promotion is valid.
+    /// </remarks>
+    public void PromotePiece()
+    {
+        if (_shogiPiece.Promotable)
+        {
+            _shogiPiece = _shogiPiece.PromotedPiece;
+            RefreshDisplay();
+        }
+    }
 }
