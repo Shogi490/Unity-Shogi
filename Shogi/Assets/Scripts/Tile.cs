@@ -17,18 +17,18 @@ public class Tile : MonoBehaviour
     private Text Text = null;
 
     // stores where the tile is within the playgrid
-    public int2 coordinates;
+    public int2 Coordinates;
     // determines whether (if the tile is populated with a Shogi Piece) belongs to the player or not.
-    public bool isPlayerOwned = false;
+    public bool IsPlayerOwned = false;
     // toggles the highlighted appearence and functionality when true. (highlights tile and changes behavior on click)
-    public bool isHighlighted = false;
-    // is set by the game controller. 
+    public bool IsHighlighted = false;
+    // an action that called when the Tile is clicked. This is set by the game controller. 
     public Action<int2> OnPlayerClicked;
 
     // Start is called before the first frame update
     void Awake()
     {
-        refreshDisplay();
+        RefreshDisplay();
     }
 
     // Update is called once per frame
@@ -39,38 +39,48 @@ public class Tile : MonoBehaviour
 
     public void OnClick()
     {
-        OnPlayerClicked.Invoke(coordinates);
+        OnPlayerClicked.Invoke(Coordinates);
     }
 
     public void SetShogiPiece(ShogiPiece shogiPiece)
     {
         _shogiPiece = shogiPiece;
-        refreshDisplay();
+        RefreshDisplay();
     }
 
     // applies the highlight appearence to this tile
-    public void highlight()
+    public void Highlight()
     {
         // this.HighlightOverlay.enabled = true;
-        Debug.Log("Highlighted " + coordinates.x + ", " + coordinates.y);
+        Debug.Log("Highlighted " + Coordinates.x + ", " + Coordinates.y);
         Image.color = Color.green;
+        this.IsHighlighted = true;
     }
 
     // removes the highlight appearence to this tile
-    public void unhighlight()
+    public void Unhighlight()
     {
-        Debug.Log("Unhighlighted " + coordinates.x + ", " + coordinates.y);
+        Debug.Log("Unhighlighted " + Coordinates.x + ", " + Coordinates.y);
         // this.HighlightOverlay.enabled = false;
         Image.color = Color.white;
+        this.IsHighlighted = false;
     }
 
-    private void refreshDisplay()
+    public void RefreshDisplay()
     {
-        Image.sprite = _shogiPiece.Sprite;
+        // Add Text
         Text.text = _shogiPiece.Name.ToString();
-        if(isHighlighted)
+        // Allocate correctly colored sprite
+        if (GameController.PlayerIsWhite == IsPlayerOwned)
         {
-            // appear highlighted
+            Image.sprite = _shogiPiece.WSprite;
+        } else
+        {
+            Image.sprite = _shogiPiece.BSprite;
+        }
+        // Highlight the Tile
+        if(IsHighlighted)
+        {
             Image.color = Color.green;
         } else
         {

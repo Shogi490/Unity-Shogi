@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
   m_Name: Empty
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  WSprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  BSprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
   Name: 
   Value: 0
   movementOptions: 08000000
