@@ -11,6 +11,7 @@ public class ShogiPiece : ScriptableObject
     public string Name;
     public int Value;
     public MovementOption[] movementOptions;
+    public bool Promotable;
     public ShogiPiece PromotedPiece;
 }
 

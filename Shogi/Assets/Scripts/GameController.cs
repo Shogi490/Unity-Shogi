@@ -117,8 +117,17 @@ public class GameController : MonoBehaviour
                 newMovable.Highlight();
                 newMovable.OnPlayerClicked = (int2 highlightedCoord) =>
                 {
-                    _unselectTile(); // should unhighlight newMovable.
-                    _movePiece(selectedTile.Coordinates, highlightedCoord);
+                    _unselectTile(); // should unhighlight everything that was previously highlighted.
+                    if (_movePiece(selectedTile.Coordinates, highlightedCoord))
+                    {
+                        // check if should promote
+                        Tile promotionCandidate = tiles[highlightedCoord.x, highlightedCoord.y];
+                        if (_tileCanPromote(promotionCandidate))
+                        {
+                            // prompt for promotion
+                            promotionCandidate.PromptForPromotion();
+                        }
+                    }
                 };
             });
             selectedCoord = selectedTile.Coordinates;
@@ -126,13 +135,34 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
-    /// Moves the ShogiPiece from the first coordinate to the second coordinate.
-    /// Doesn't do anything if either is not in bounds or both coords are the same.
-    /// TODO: should throw error on out of bounds for either
+    /// determines whether the piece at the given Tile can be promoted
     /// </summary>
+    /// <param name="newlyMoved"></param>
+    /// <returns>Whether or not the piece at the Tile can be promoted</returns>
+    private bool _tileCanPromote(Tile newlyMoved)
+    {
+        if(newlyMoved.IsPlayerOwned)
+        {
+            // check the top 3 rows
+            return newlyMoved.Coordinates.x < 3;
+        } else
+        {
+            // check the bottom 3 rows
+            return newlyMoved.Coordinates.x >= rows - 3;
+        }
+    }
+
+    /// <summary>
+    /// Moves the ShogiPiece from the first coordinate to the second coordinate.
+    /// </summary>
+    /// <remarks>
+    /// Doesn't do anything if the coordinates are not in bounds or are the same <br/>
+    /// TODO: should throw error on out of bounds for either
+    /// </remarks>
     /// <param name="from">source coordinate</param>
     /// <param name="to">destination coordinate</param>
-    private void _movePiece(int2 from, int2 to)
+    /// <returns> Boolean: true if move was valid/successful, false otherwise </returns>
+    private bool _movePiece(int2 from, int2 to)
     {
         // both are in bounds and are not the same
         if (_coordInBounds(from) && _coordInBounds(to) && (from.x != to.x || from.y != to.y))
@@ -144,6 +174,11 @@ public class GameController : MonoBehaviour
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
             fromTile.SetShogiPiece(empty);
+
+            return true;
+        } else
+        {
+            return false;
         }
     }
 

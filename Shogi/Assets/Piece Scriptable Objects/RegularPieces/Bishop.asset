@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Bishop
   Value: 8
   movementOptions: 05000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: ea3496f2709920b43958f43c6735564f, type: 2}

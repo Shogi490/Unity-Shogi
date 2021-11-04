@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Rook
   Value: 3
   movementOptions: 06000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: 40db61f9e701caf449b59d524dcd4826, type: 2}

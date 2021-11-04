@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Pawn
   Value: 1
   movementOptions: 07000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: d5da23e0dd869bb48bc6e43cac23cede, type: 2}

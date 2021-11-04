@@ -16,6 +16,13 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private Text Text = null;
 
+    [SerializeField]
+    private GameObject _promotionPrompt = null;
+    [SerializeField]
+    private Image _noPromotionImage = null;
+    [SerializeField]
+    private Image _yesPromotionImage = null;
+
     // stores where the tile is within the playgrid
     public int2 Coordinates;
     // determines whether (if the tile is populated with a Shogi Piece) belongs to the player or not.
@@ -86,5 +93,31 @@ public class Tile : MonoBehaviour
         {
             Image.color = Color.white;
         }
+        // Update the Promotion Prompt
+        if (_shogiPiece.Promotable)
+        {
+            _noPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
+            _yesPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite;
+        }
+    }
+
+    public void PromptForPromotion()
+    {
+        if (_shogiPiece.Promotable && IsPlayerOwned)
+        {
+            _promotionPrompt.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Promotes the Shogi Piece if the piece is promotable
+    /// </summary>
+    /// <remarks>
+    /// Doesn't check whether or not the promotion is valid.
+    /// </remarks>
+    public void PromotePiece()
+    {
+        SetShogiPiece(_shogiPiece.PromotedPiece);
+        _promotionPrompt.SetActive(false);
     }
 }

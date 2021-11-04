@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Silver General
   Value: 5
   movementOptions: 02000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: 086a4baa496903949a1307da2032b3ac, type: 2}
