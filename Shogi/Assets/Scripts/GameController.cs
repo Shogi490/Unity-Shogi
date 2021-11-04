@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
 
     public static bool PlayerIsWhite = true;
+    
 
     public Tile TilePrefab;
 
@@ -61,6 +64,28 @@ public class GameController : MonoBehaviour
             tiles[row, column].SetShogiPiece(EnemyPieces[i]);
             tiles[row, column].RefreshDisplay();
             ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
+        }
+    }
+
+    [SerializeField]
+    private ShogiPiece _shogiPiece = null;
+    public ShogiPiece ShogiPiece { get => _shogiPiece; }
+
+    [SerializeField]
+    private Image Image = null;
+
+    public void SwitchSides()
+    {
+        //if (kingIsAlive) { } for later to end game
+        bool isBlackTurn = Image.sprite == _shogiPiece.WSprite ? true : false;
+        SetInteractive(PlayerPieces, !isBlackTurn); //white pieces move
+        SetInteractive(EnemyPieces, isBlackTurn);  //black pieces move
+    }
+    private void SetInteractive(ShogiPiece[] allPieces, bool value)
+    {
+        foreach (ShogiPiece piece in allPieces)
+        {
+            piece.gameObject.setEnabled(value);
         }
     }
 

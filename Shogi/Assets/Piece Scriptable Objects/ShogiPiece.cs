@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 [CreateAssetMenu(fileName = "ShogiPiece")]
 public class ShogiPiece : ScriptableObject
 {
