@@ -338,7 +338,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -0.000061035156, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &568373226
 MonoBehaviour:
@@ -438,8 +438,6 @@ MonoBehaviour:
   empty: {fileID: 11400000, guid: bb8e21e5802b64648ae66af8956b1490, type: 2}
   TilePrefab: {fileID: -396539939597185571, guid: 38076a4d1847330488b11aa4d1f47759,
     type: 3}
-  _shogiPiece: {fileID: 0}
-  Image: {fileID: 0}
 --- !u!1 &1149792928
 GameObject:
   m_ObjectHideFlags: 0

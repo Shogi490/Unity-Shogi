@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
 
     public static bool PlayerIsWhite = true;
+    public static bool IsPlayerTurn = true;
 
 
     public Tile TilePrefab;
@@ -62,26 +63,30 @@ public class GameController : MonoBehaviour
             int row = i / columns;
             int column = i % columns;
             tiles[row, column].SetShogiPiece(EnemyPieces[i]);
+            tiles[row, column].IsPlayerOwned = false;
             tiles[row, column].RefreshDisplay();
             ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
         }
     }
 
-    [SerializeField]
-    private bool _isBlackTurn = false;
-
-    public void SwitchSides()
+    private void _switchSides()
     {
+        Debug.Log($"IsPlayerTurn is {IsPlayerTurn}");
+        IsPlayerTurn = !IsPlayerTurn;
+        Debug.Log($"IsPlayerTurn has switched to {IsPlayerTurn}");
         //if (kingIsAlive) { } for later to end game
-        SetInteractive(PlayerPieces, !_isBlackTurn); //white pieces move
-        SetInteractive(EnemyPieces, _isBlackTurn);  //black pieces move
-    }
-    private void SetInteractive(ShogiPiece[] allPieces, bool value)
-    {
-        foreach (ShogiPiece piece in allPieces)
-        {
-            //piece.gameObject.setEnabled(value);
-        }
+
+        //for (int i = 0; i < rows; i++)
+        //{
+        //    for (int j = 0; j < columns; j++)
+        //    {
+        //        Tile victim = tiles[i, j];
+        //        if(victim.ShogiPiece != empty)
+        //        {
+        //            victim.IsPlayerOwned = !victim.IsPlayerOwned;
+        //        }
+        //    }
+        //}
     }
 
     /// <summary>
@@ -130,7 +135,7 @@ public class GameController : MonoBehaviour
     /// <param name="selectedTile">The Tile that was clicked</param>
     private void _selectTile(Tile selectedTile)
     {
-        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned)
+        if (_coordInBounds(selectedTile.Coordinates) && (selectedTile.IsPlayerOwned == IsPlayerTurn))
         {
             // highlight movable Tiles
             _forMovableTilesFrom(selectedTile, (Tile newMovable) =>
@@ -152,10 +157,12 @@ public class GameController : MonoBehaviour
                             // promote
                             promotionCandidate.PromotePiece();
                         }
+                        _switchSides();
                     }
                 };
             });
             selectedCoord = selectedTile.Coordinates;
+            selectedTile.RefreshDisplay();
         }
     }
 
@@ -196,7 +203,7 @@ public class GameController : MonoBehaviour
             Tile fromTile = _getTileFromCoord(from);
             Tile toTile = _getTileFromCoord(to);
 
-            toTile.IsPlayerOwned = true;
+            toTile.IsPlayerOwned = fromTile.IsPlayerOwned;
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
             fromTile.SetShogiPiece(empty);
@@ -323,7 +330,7 @@ public class GameController : MonoBehaviour
             if (tile == null || tile.ShogiPiece != empty)
             {
                 // if tile is populated with enemy piece, the tile is capturable
-                if (tile != null && tile.IsPlayerOwned == false) moveableTiles.Add(tile);
+                if (tile != null && tile.IsPlayerOwned != IsPlayerTurn) moveableTiles.Add(tile);
                 // regardless, since it is populated (or null), should stop probing
                 return false;
             }
@@ -337,7 +344,7 @@ public class GameController : MonoBehaviour
         {
             int colorDirectionMultiplier = (targetTile.IsPlayerOwned) ? -1 : 1;
             Tile relativeTile = _getTileFromCoord(new int2(coord.x + (dy * colorDirectionMultiplier), coord.y + dx));
-            if (relativeTile != null && relativeTile.IsPlayerOwned == false) return relativeTile;
+            if (relativeTile != null && (relativeTile.ShogiPiece == empty || relativeTile.IsPlayerOwned != IsPlayerTurn)) return relativeTile;
             return null;
         }
     }
