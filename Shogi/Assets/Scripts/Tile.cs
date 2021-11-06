@@ -115,9 +115,10 @@ public class Tile : MonoBehaviour
     /// <remarks>
     /// Doesn't check whether or not the promotion is valid.
     /// </remarks>
-    public void PromotePiece()
+    public void PromotePiece(bool willPromote)
     {
-        SetShogiPiece(_shogiPiece.PromotedPiece);
+        if(willPromote) SetShogiPiece(_shogiPiece.PromotedPiece);
         _promotionPrompt.SetActive(false);
+        //GameController.SwitchSides();
     }
 }

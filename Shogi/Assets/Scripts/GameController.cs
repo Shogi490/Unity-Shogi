@@ -17,6 +17,12 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
 
     public static bool PlayerIsWhite = true;
+    public static bool IsPlayerTurn = true;
+    //public static void SwitchSides()
+    //{
+    //    IsPlayerTurn = !IsPlayerTurn;
+    //    //if (kingIsAlive) { } for later to end game
+    //}
 
     public Tile TilePrefab;
 
@@ -109,7 +115,7 @@ public class GameController : MonoBehaviour
     /// <param name="selectedTile">The Tile that was clicked</param>
     private void _selectTile(Tile selectedTile)
     {
-        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned)
+        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned == IsPlayerTurn)
         {
             // highlight movable Tiles
             _forMovableTilesFrom(selectedTile, (Tile newMovable) =>
@@ -126,6 +132,9 @@ public class GameController : MonoBehaviour
                         {
                             // prompt for promotion
                             promotionCandidate.PromptForPromotion();
+                        } else
+                        {
+                            //SwitchSides();
                         }
                     }
                 };
