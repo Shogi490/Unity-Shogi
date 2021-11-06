@@ -17,6 +17,12 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
 
     public static bool PlayerIsWhite = true;
+    public static bool IsPlayerTurn = true;
+    public static void SwitchSides()
+    {
+        IsPlayerTurn = !IsPlayerTurn;
+        //if (kingIsAlive) { } for later to end game
+    }
 
     public Tile TilePrefab;
 
@@ -109,7 +115,7 @@ public class GameController : MonoBehaviour
     /// <param name="selectedTile">The Tile that was clicked</param>
     private void _selectTile(Tile selectedTile)
     {
-        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned)
+        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned == IsPlayerTurn)
         {
             // highlight movable Tiles
             _forMovableTilesFrom(selectedTile, (Tile newMovable) =>
@@ -126,6 +132,9 @@ public class GameController : MonoBehaviour
                         {
                             // prompt for promotion
                             promotionCandidate.PromptForPromotion();
+                        } else
+                        {
+                            SwitchSides();
                         }
                     }
                 };
@@ -170,7 +179,7 @@ public class GameController : MonoBehaviour
             Tile fromTile = _getTileFromCoord(from);
             Tile toTile = _getTileFromCoord(to);
 
-            toTile.IsPlayerOwned = true;
+            toTile.IsPlayerOwned = fromTile.IsPlayerOwned;
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
             fromTile.SetShogiPiece(empty);
@@ -296,7 +305,7 @@ public class GameController : MonoBehaviour
             if (tile == null || tile.ShogiPiece != empty)
             {
                 // if tile is populated with enemy piece, the tile is capturable
-                if (tile != null && tile.IsPlayerOwned == false) moveableTiles.Add(tile);
+                if (tile != null && tile.IsPlayerOwned == !IsPlayerTurn) moveableTiles.Add(tile);
                 // regardless, since it is populated (or null), should stop probing
                 return false;
             }
@@ -310,7 +319,7 @@ public class GameController : MonoBehaviour
         {
             int colorDirectionMultiplier = (targetTile.IsPlayerOwned) ? -1 : 1;
             Tile relativeTile = _getTileFromCoord(new int2(coord.x + (dy * colorDirectionMultiplier), coord.y + dx));
-            if (relativeTile != null && relativeTile.IsPlayerOwned == false) return relativeTile;
+            if (relativeTile != null && (relativeTile.ShogiPiece == empty || relativeTile.IsPlayerOwned != IsPlayerTurn)) return relativeTile;
             return null;
         }
     }
