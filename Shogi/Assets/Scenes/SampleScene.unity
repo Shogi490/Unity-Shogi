@@ -314,7 +314,6 @@ GameObject:
   - component: {fileID: 568373225}
   - component: {fileID: 568373227}
   - component: {fileID: 568373226}
-  - component: {fileID: 568373228}
   m_Layer: 5
   m_Name: PlayGrid
   m_TagString: Untagged
@@ -441,18 +440,6 @@ MonoBehaviour:
     type: 3}
   _shogiPiece: {fileID: 0}
   Image: {fileID: 0}
---- !u!114 &568373228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 568373224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8c749d7e5d285a46b7a68fbf6e1f569, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1149792928
 GameObject:
   m_ObjectHideFlags: 0

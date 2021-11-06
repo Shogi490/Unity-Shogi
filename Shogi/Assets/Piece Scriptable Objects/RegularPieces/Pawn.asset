@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
+  m_Script: {fileID: 11500000, guid: b7006256ae3b04c44960c6de1c9282d4, type: 3}
   m_Name: Pawn
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 21300000, guid: 825ae1d47e445604bae9ee20118e5270, type: 3}
-  BSprite: {fileID: 21300000, guid: 8bf0755a519a49f4ea819a6d0bb19557, type: 3}
+  WSprite: {fileID: 21300000, guid: 8bf0755a519a49f4ea819a6d0bb19557, type: 3}
+  BSprite: {fileID: 21300000, guid: 825ae1d47e445604bae9ee20118e5270, type: 3}
   Name: Pawn
-  Value: 1
+  Value: 0
   movementOptions: 07000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: d5da23e0dd869bb48bc6e43cac23cede, type: 2}

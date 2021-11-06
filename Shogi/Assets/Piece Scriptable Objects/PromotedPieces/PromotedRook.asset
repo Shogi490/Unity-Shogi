@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
+  m_Script: {fileID: 11500000, guid: b7006256ae3b04c44960c6de1c9282d4, type: 3}
   m_Name: PromotedRook
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 0}
-  BSprite: {fileID: 0}
+  WSprite: {fileID: 21300000, guid: 1a5d098a089a617459741050dc22eac4, type: 3}
+  BSprite: {fileID: 21300000, guid: e8e52a750d4b2934a9e4cfcbb79488af, type: 3}
   Name: Promoted Rook
-  Value: 13
+  Value: 0
   movementOptions: 0000000006000000
+  Promotable: 0
   PromotedPiece: {fileID: 11400000}

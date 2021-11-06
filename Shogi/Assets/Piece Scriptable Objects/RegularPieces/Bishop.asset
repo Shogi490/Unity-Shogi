@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
+  m_Script: {fileID: 11500000, guid: b7006256ae3b04c44960c6de1c9282d4, type: 3}
   m_Name: Bishop
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 21300000, guid: 05aad1a4f5bd0d947b837127f74b1303, type: 3}
-  BSprite: {fileID: 21300000, guid: 8d96b39c384dcb041842338face425d4, type: 3}
+  WSprite: {fileID: 21300000, guid: 8d96b39c384dcb041842338face425d4, type: 3}
+  BSprite: {fileID: 21300000, guid: 05aad1a4f5bd0d947b837127f74b1303, type: 3}
   Name: Bishop
-  Value: 8
+  Value: 0
   movementOptions: 05000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: ea3496f2709920b43958f43c6735564f, type: 2}

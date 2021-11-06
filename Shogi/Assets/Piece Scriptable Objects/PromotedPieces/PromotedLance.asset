@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
+  m_Script: {fileID: 11500000, guid: b7006256ae3b04c44960c6de1c9282d4, type: 3}
   m_Name: PromotedLance
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 0}
-  BSprite: {fileID: 0}
+  WSprite: {fileID: 21300000, guid: b3b3c27e99604cc4286d7c4ba1c8dcf6, type: 3}
+  BSprite: {fileID: 21300000, guid: c0907d03640bcc3448c7022f101e5998, type: 3}
   Name: Promoted Lance
-  Value: 5
+  Value: 0
   movementOptions: 01000000
+  Promotable: 0
   PromotedPiece: {fileID: 11400000}

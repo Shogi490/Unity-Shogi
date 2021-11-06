@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
+  m_Script: {fileID: 11500000, guid: b7006256ae3b04c44960c6de1c9282d4, type: 3}
   m_Name: SilverGeneral
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 21300000, guid: f96c291789fbd2a40a949317bffaeffe, type: 3}
-  BSprite: {fileID: 21300000, guid: fd856f098dd07ff498963e048326e565, type: 3}
+  WSprite: {fileID: 21300000, guid: fd856f098dd07ff498963e048326e565, type: 3}
+  BSprite: {fileID: 21300000, guid: f96c291789fbd2a40a949317bffaeffe, type: 3}
   Name: Silver General
-  Value: 5
+  Value: 0
   movementOptions: 02000000
+  Promotable: 1
   PromotedPiece: {fileID: 11400000, guid: 086a4baa496903949a1307da2032b3ac, type: 2}

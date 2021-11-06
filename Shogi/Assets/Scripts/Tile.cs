@@ -74,15 +74,17 @@ public class Tile : MonoBehaviour
         if (GameController.PlayerIsWhite == IsPlayerOwned)
         {
             Image.sprite = _shogiPiece.WSprite;
-        } else
+        }
+        else
         {
             Image.sprite = _shogiPiece.BSprite;
         }
         // Highlight the Tile
-        if(IsHighlighted)
+        if (IsHighlighted)
         {
             Image.color = Color.green;
-        } else
+        }
+        else
         {
             Image.color = Color.white;
         }

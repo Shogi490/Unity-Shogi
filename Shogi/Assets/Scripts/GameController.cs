@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
 
     public static bool PlayerIsWhite = true;
-    
+
 
     public Tile TilePrefab;
 
@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
     //public UnityEvent manualRestart;
 
     //private Tile selected;
-    private int2 selectedCoord = new int2(-1,-1);
+    private int2 selectedCoord = new int2(-1, -1);
 
     // Start is called before the first frame update
     void Awake()
@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
         }
 
         // set the player's initial pieces
-        for(int i = 0; i < PlayerPieces.Length; i++)
+        for (int i = 0; i < PlayerPieces.Length; i++)
         {
             int row = rows - (1 + (i / columns));
             int column = columns - (1 + (i % columns));
@@ -68,24 +68,19 @@ public class GameController : MonoBehaviour
     }
 
     [SerializeField]
-    private ShogiPiece _shogiPiece = null;
-    public ShogiPiece ShogiPiece { get => _shogiPiece; }
-
-    [SerializeField]
-    private Image Image = null;
+    private bool _isBlackTurn = false;
 
     public void SwitchSides()
     {
         //if (kingIsAlive) { } for later to end game
-        bool isBlackTurn = Image.sprite == _shogiPiece.WSprite ? true : false;
-        SetInteractive(PlayerPieces, !isBlackTurn); //white pieces move
-        SetInteractive(EnemyPieces, isBlackTurn);  //black pieces move
+        SetInteractive(PlayerPieces, !_isBlackTurn); //white pieces move
+        SetInteractive(EnemyPieces, _isBlackTurn);  //black pieces move
     }
     private void SetInteractive(ShogiPiece[] allPieces, bool value)
     {
         foreach (ShogiPiece piece in allPieces)
         {
-            piece.gameObject.setEnabled(value);
+            //piece.gameObject.setEnabled(value);
         }
     }
 
@@ -102,7 +97,8 @@ public class GameController : MonoBehaviour
             if (selectedCoord.x == newCoord.x && selectedCoord.y == newCoord.y)
             {
                 _unselectTile(); // (Case 1): Re-selected the same tile: Only Unselect
-            } else
+            }
+            else
             {
                 _unselectTile(); // (Case 2): Selected and newlySelected are different: Unselect and ...
                 _selectTile(newTile); // (Case 3): No Current Selection: Select newlySelected!
@@ -116,7 +112,7 @@ public class GameController : MonoBehaviour
     private void _unselectTile()
     {
         Tile selectedTile = _getTileFromCoord(selectedCoord);
-        if(selectedTile != null)
+        if (selectedTile != null)
         {
             // there is a selected Tile
             _forMovableTilesFrom(selectedTile, (Tile oldMovable) =>
@@ -170,11 +166,12 @@ public class GameController : MonoBehaviour
     /// <returns>Whether or not the piece at the Tile can be promoted</returns>
     private bool _tileCanPromote(Tile newlyMoved)
     {
-        if(newlyMoved.IsPlayerOwned)
+        if (newlyMoved.IsPlayerOwned)
         {
             // check the top 3 rows
             return newlyMoved.Coordinates.x < 3;
-        } else
+        }
+        else
         {
             // check the bottom 3 rows
             return newlyMoved.Coordinates.x >= rows - 3;
@@ -205,7 +202,8 @@ public class GameController : MonoBehaviour
             fromTile.SetShogiPiece(empty);
 
             return true;
-        } else
+        }
+        else
         {
             return false;
         }
@@ -223,9 +221,9 @@ public class GameController : MonoBehaviour
         List<Tile> moveableTiles = _getMovableTilesFrom(targetTile);
 
         // for each of those tiles, callback(movableTile);
-        foreach(Tile tile in moveableTiles)
+        foreach (Tile tile in moveableTiles)
         {
-            if(tile != null) callback(tile);
+            if (tile != null) callback(tile);
         }
     }
 
@@ -233,7 +231,7 @@ public class GameController : MonoBehaviour
     {
         int2 coord = targetTile.Coordinates;
         List<Tile> moveableTiles = new List<Tile>();
-        foreach(MovementOption option in targetTile.ShogiPiece.movementOptions)
+        foreach (MovementOption option in targetTile.ShogiPiece.movementOptions)
         {
             switch (option)
             {
