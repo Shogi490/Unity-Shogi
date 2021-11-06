@@ -18,11 +18,11 @@ public class GameController : MonoBehaviour
 
     public static bool PlayerIsWhite = true;
     public static bool IsPlayerTurn = true;
-    //public static void SwitchSides()
-    //{
-    //    IsPlayerTurn = !IsPlayerTurn;
-    //    //if (kingIsAlive) { } for later to end game
-    //}
+    public static void SwitchSides()
+    {
+        IsPlayerTurn = !IsPlayerTurn;
+        //if (kingIsAlive) { } for later to end game
+    }
 
     public Tile TilePrefab;
 
@@ -134,7 +134,7 @@ public class GameController : MonoBehaviour
                             promotionCandidate.PromptForPromotion();
                         } else
                         {
-                            //SwitchSides();
+                            SwitchSides();
                         }
                     }
                 };
@@ -179,7 +179,7 @@ public class GameController : MonoBehaviour
             Tile fromTile = _getTileFromCoord(from);
             Tile toTile = _getTileFromCoord(to);
 
-            toTile.IsPlayerOwned = true;
+            toTile.IsPlayerOwned = fromTile.IsPlayerOwned;
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
             fromTile.SetShogiPiece(empty);
@@ -305,7 +305,7 @@ public class GameController : MonoBehaviour
             if (tile == null || tile.ShogiPiece != empty)
             {
                 // if tile is populated with enemy piece, the tile is capturable
-                if (tile != null && tile.IsPlayerOwned == false) moveableTiles.Add(tile);
+                if (tile != null && tile.IsPlayerOwned == !IsPlayerTurn) moveableTiles.Add(tile);
                 // regardless, since it is populated (or null), should stop probing
                 return false;
             }
@@ -319,7 +319,7 @@ public class GameController : MonoBehaviour
         {
             int colorDirectionMultiplier = (targetTile.IsPlayerOwned) ? -1 : 1;
             Tile relativeTile = _getTileFromCoord(new int2(coord.x + (dy * colorDirectionMultiplier), coord.y + dx));
-            if (relativeTile != null && relativeTile.IsPlayerOwned == false) return relativeTile;
+            if (relativeTile != null && (relativeTile.ShogiPiece == empty || relativeTile.IsPlayerOwned != IsPlayerTurn)) return relativeTile;
             return null;
         }
     }

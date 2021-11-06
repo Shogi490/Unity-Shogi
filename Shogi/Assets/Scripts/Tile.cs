@@ -103,9 +103,12 @@ public class Tile : MonoBehaviour
 
     public void PromptForPromotion()
     {
-        if (_shogiPiece.Promotable && IsPlayerOwned)
+        if (_shogiPiece.Promotable && IsPlayerOwned == GameController.IsPlayerTurn)
         {
             _promotionPrompt.SetActive(true);
+        } else
+        {
+            GameController.SwitchSides();
         }
     }
 
@@ -119,6 +122,6 @@ public class Tile : MonoBehaviour
     {
         if(willPromote) SetShogiPiece(_shogiPiece.PromotedPiece);
         _promotionPrompt.SetActive(false);
-        //GameController.SwitchSides();
+        GameController.SwitchSides();
     }
 }
