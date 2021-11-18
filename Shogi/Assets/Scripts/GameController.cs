@@ -345,4 +345,14 @@ public class GameController : MonoBehaviour
     {
         return coord.x >= 0 && coord.x < columns && coord.y >= 0 && coord.y < rows;
     }
+
+    /// <summary>
+    /// The Getter for any tile within the play grid.
+    /// </summary>
+    /// <param name="coord"></param>
+    /// <returns></returns>
+    public Tile GetTileAt(int2 coord)
+    {
+        return tiles[coord.x, coord.y];
+    }
 }
