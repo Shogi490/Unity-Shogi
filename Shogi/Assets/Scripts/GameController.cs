@@ -70,6 +70,17 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void ForAllTiles(System.Action<Tile> callback)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                callback(tiles[i, j]);
+            }
+        }
+    }
+
     /// <summary>
     /// An Event Listener for when the User Clicks on an unhighlighted Tile.
     /// </summary>
