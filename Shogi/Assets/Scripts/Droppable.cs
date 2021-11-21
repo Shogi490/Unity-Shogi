@@ -27,7 +27,7 @@ public class Droppable : MonoBehaviour
         _gameController = GameController.Instance;
         _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
         SetDropAmount(_dropAmount);
-        // TODO: on Game Controller's On New Turn Event, make the buttons interactable or not.
+        _gameController.OnNewTurn.Add(_enableButtonOnTurn);
     }
 
     // Update is called once per frame
@@ -40,14 +40,12 @@ public class Droppable : MonoBehaviour
     {
         _dropAmount++;
         _dropText.text = _dropAmount.ToString();
-        _button.interactable = _dropAmount == 0 ? false : true;
     }
 
     public void SetDropAmount(int startAmount)
     {
         _dropAmount = startAmount;
         _dropText.text = _dropAmount.ToString();
-        _button.interactable = _dropAmount == 0 ? false : true;
     }
 
     public void OnClick()
@@ -55,6 +53,17 @@ public class Droppable : MonoBehaviour
         if(_gameController.IsPlayerTurn == _isPlayer)
         {
             _dropController.playerWantsToDrop(DroppablePiece);
+        }
+    }
+
+    private void _enableButtonOnTurn(bool isPlayerTurn)
+    {
+        if(isPlayerTurn == _isPlayer && _dropAmount > 0)
+        {
+            _button.interactable = true;
+        } else
+        {
+            _button.interactable = false;
         }
     }
 }
