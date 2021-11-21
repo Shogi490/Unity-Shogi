@@ -26,7 +26,11 @@ public class GameController : MonoBehaviour
 
     public Tile TilePrefab;
 
-    private Tile[,] tiles;
+    public Tile[,] tiles
+    {
+        get;
+        private set;
+    }
     //public UnityEvent manualRestart;
 
     //private Tile selected;

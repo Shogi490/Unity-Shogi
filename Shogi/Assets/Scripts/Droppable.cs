@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class Droppable : MonoBehaviour
 {
     [SerializeField]
-    private DropController dropController;
-    [SerializeField]
     private ShogiPiece DroppablePiece;
     [SerializeField]
     private Image _dropImage;
@@ -16,8 +14,14 @@ public class Droppable : MonoBehaviour
     [SerializeField]
     private bool _isPlayer;
 
+    private DropController dropController;
     private int _dropAmount = 0;
-        
+
+    private void Awake()
+    {
+        dropController = DropController.Instance;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

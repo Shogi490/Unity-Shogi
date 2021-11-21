@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class DropController : MonoBehaviour
 {
+    public static DropController Instance
+    {
+        get;
+        private set;
+    }
     [SerializeField]
     private GameController _gameController;
     [SerializeField]
@@ -17,7 +22,13 @@ public class DropController : MonoBehaviour
     // Is called only once and before the game starts, and before Start
     private void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        } else
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Start is called before the first frame update
@@ -32,6 +43,11 @@ public class DropController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Used for if you're initializing the board from halfway through a game. This should populate the droppable boards.
+    /// </summary>
+    /// <param name="enemyDroppable"></param>
+    /// <param name="playerDroppable"></param>
     public void Init(int[] enemyDroppable, int[] playerDroppable)
     {
 
@@ -50,6 +66,13 @@ public class DropController : MonoBehaviour
 
     private void _emptyTileClicked (int2 coord)
     {
-
+        // do edge case checks here.
+        
+        // pawn cannot be placed if player's unpromoted pawn exists within the same file
+        // pawn cannot be placed if it causes checkMATE (check is OK)
+        // pieces cannot be placed in such a way that they have no valid moves 
+            // (pawn/lance cannot be in last row) 
+            // (knight cannot be within last 2 rows)
+        // 
     }
 }
