@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController Instance { get; private set; }
+    public Tile TilePrefab;
+    public Tile[,] tiles{ get; private set; }
+
     [SerializeField]
     private int rows = 0;
     [SerializeField]
@@ -18,19 +22,6 @@ public class GameController : MonoBehaviour
 
     public static bool PlayerIsWhite = true;
     public static bool IsPlayerTurn = true;
-    public static void SwitchSides()
-    {
-        IsPlayerTurn = !IsPlayerTurn;
-        //if (kingIsAlive) { } for later to end game
-    }
-
-    public Tile TilePrefab;
-
-    public Tile[,] tiles
-    {
-        get;
-        private set;
-    }
     //public UnityEvent manualRestart;
 
     //private Tile selected;
@@ -39,6 +30,15 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         // The below populates the tiles array.
         tiles = new Tile[rows, columns];
 
@@ -72,6 +72,11 @@ public class GameController : MonoBehaviour
             tiles[row, column].RefreshDisplay();
             ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
         }
+    }
+    public static void SwitchSides()
+    {
+        IsPlayerTurn = !IsPlayerTurn;
+        //if (kingIsAlive) { } for later to end game
     }
 
     public void ForAllTiles(System.Action<Tile> callback)

@@ -10,7 +10,6 @@ public class DropController : MonoBehaviour
         get;
         private set;
     }
-    [SerializeField]
     private GameController _gameController;
     [SerializeField]
     private Droppable[] _enemyDroppable;
@@ -29,6 +28,7 @@ public class DropController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        _gameController = GameController.Instance;
     }
 
     // Start is called before the first frame update

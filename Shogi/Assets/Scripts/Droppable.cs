@@ -6,13 +6,15 @@ using UnityEngine.UI;
 public class Droppable : MonoBehaviour
 {
     [SerializeField]
-    private ShogiPiece DroppablePiece;
+    private ShogiPiece DroppablePiece = null;
     [SerializeField]
-    private Image _dropImage;
+    private Button _button = null;
     [SerializeField]
-    private Text _dropText;
+    private Image _dropImage = null;
     [SerializeField]
-    private bool _isPlayer;
+    private Text _dropText = null;
+    [SerializeField]
+    private bool _isPlayer = false;
 
     private DropController dropController;
     private int _dropAmount = 0;
@@ -26,7 +28,7 @@ public class Droppable : MonoBehaviour
     void Start()
     {
         _dropImage.sprite = (_isPlayer == GameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
-        _dropText.text = _dropAmount.ToString();
+        SetDropAmount(_dropAmount);
     }
 
     // Update is called once per frame
@@ -39,6 +41,7 @@ public class Droppable : MonoBehaviour
     {
         _dropAmount = startAmount;
         _dropText.text = _dropAmount.ToString();
+        _button.interactable = _dropAmount == 0 ? false : true;
     }
 
     public void OnClick()
