@@ -83,6 +83,11 @@ public class GameController : MonoBehaviour
         //if (kingIsAlive) { } for later to end game
     }
 
+    public void ResetTileOnPlayerClicked(int2 coord)
+    {
+        tiles[coord.x, coord.y].OnPlayerClicked = _onTileSelected;
+    }
+
     public void ForAllTiles(System.Action<Tile> callback)
     {
         for (int i = 0; i < rows; i++)
