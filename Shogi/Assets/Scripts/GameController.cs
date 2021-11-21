@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController Instance { get; private set; }
+    public bool PlayerIsWhite = true;
+    public bool IsPlayerTurn = true;
+    public Tile[,] tiles { get; private set; }
+    public Tile TilePrefab;
+    public List<System.Action<bool>> OnNewTurn = new List<System.Action<bool>>();
+
     [SerializeField]
     private int rows = 0;
     [SerializeField]
@@ -15,18 +22,6 @@ public class GameController : MonoBehaviour
     private ShogiPiece[] EnemyPieces = null;
     [SerializeField]
     private ShogiPiece empty = null;
-
-    public static bool PlayerIsWhite = true;
-    public static bool IsPlayerTurn = true;
-    public static void SwitchSides()
-    {
-        IsPlayerTurn = !IsPlayerTurn;
-        //if (kingIsAlive) { } for later to end game
-    }
-
-    public Tile TilePrefab;
-
-    private Tile[,] tiles;
     //public UnityEvent manualRestart;
 
     //private Tile selected;
@@ -35,6 +30,15 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         // The below populates the tiles array.
         tiles = new Tile[rows, columns];
 
@@ -67,6 +71,35 @@ public class GameController : MonoBehaviour
             tiles[row, column].SetShogiPiece(EnemyPieces[i]);
             tiles[row, column].RefreshDisplay();
             ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
+        }
+
+        OnNewTurn.Add(_resetBoardClickActions);
+    }
+    public void SwitchSides()
+    {
+        IsPlayerTurn = !IsPlayerTurn;
+        foreach(System.Action<bool> listener in OnNewTurn)
+        {
+            listener(IsPlayerTurn);
+        }
+        //if (kingIsAlive) { } for later to end game
+    }
+
+    public void ResetTileOnPlayerClicked(int2 coord)
+    {
+        Tile tile = tiles[coord.x, coord.y];
+        tile.OnPlayerClicked = _onTileSelected;
+        tile.Unhighlight();
+    }
+
+    public void ForAllTiles(System.Action<Tile> callback)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                callback(tiles[i, j]);
+            }
         }
     }
 
@@ -180,6 +213,10 @@ public class GameController : MonoBehaviour
             Tile toTile = _getTileFromCoord(to);
 
             toTile.IsPlayerOwned = fromTile.IsPlayerOwned;
+            if(toTile.ShogiPiece != empty)
+            {
+                DropController.Instance.ManipulatePool(IsPlayerTurn, toTile.ShogiPiece, 1);
+            }
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
             fromTile.SetShogiPiece(empty);
@@ -344,6 +381,15 @@ public class GameController : MonoBehaviour
     private bool _coordInBounds(int2 coord)
     {
         return coord.x >= 0 && coord.x < columns && coord.y >= 0 && coord.y < rows;
+    }
+
+    private void _resetBoardClickActions(bool playerTurn)
+    {
+        ForAllTiles((Tile tile) =>
+        {
+            tile.Unhighlight();
+            tile.OnPlayerClicked = _onTileSelected;
+        });
     }
 
     /// <summary>
