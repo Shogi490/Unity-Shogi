@@ -16,18 +16,20 @@ public class Droppable : MonoBehaviour
     [SerializeField]
     private bool _isPlayer = false;
 
-    private DropController dropController;
+    private DropController _dropController;
+    private GameController _gameController;
     private int _dropAmount = 0;
 
     private void Awake()
     {
-        dropController = DropController.Instance;
+        _dropController = DropController.Instance;
+        _gameController = GameController.Instance;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        _dropImage.sprite = (_isPlayer == GameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
+        _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
         SetDropAmount(_dropAmount);
     }
 
@@ -46,6 +48,9 @@ public class Droppable : MonoBehaviour
 
     public void OnClick()
     {
-        dropController.TriggerDropFor(DroppablePiece);
+        if(_gameController.IsPlayerTurn == _isPlayer)
+        {
+            _dropController.playerWantsToDrop(DroppablePiece);
+        }
     }
 }

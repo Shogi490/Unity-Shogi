@@ -78,7 +78,7 @@ public class Tile : MonoBehaviour
         // Add Text
         Text.text = _shogiPiece.Name.ToString();
         // Allocate correctly colored sprite
-        if (GameController.PlayerIsWhite == IsPlayerOwned)
+        if (GameController.Instance.PlayerIsWhite == IsPlayerOwned)
         {
             Image.sprite = _shogiPiece.WSprite;
         } else
@@ -96,19 +96,19 @@ public class Tile : MonoBehaviour
         // Update the Promotion Prompt
         if (_shogiPiece.Promotable)
         {
-            _noPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
-            _yesPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite;
+            _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
+            _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite;
         }
     }
 
     public void PromptForPromotion()
     {
-        if (_shogiPiece.Promotable && IsPlayerOwned == GameController.IsPlayerTurn)
+        if (_shogiPiece.Promotable && IsPlayerOwned == GameController.Instance.IsPlayerTurn)
         {
             _promotionPrompt.SetActive(true);
         } else
         {
-            GameController.SwitchSides();
+            GameController.Instance.SwitchSides();
         }
     }
 
@@ -122,6 +122,6 @@ public class Tile : MonoBehaviour
     {
         if(willPromote) SetShogiPiece(_shogiPiece.PromotedPiece);
         _promotionPrompt.SetActive(false);
-        GameController.SwitchSides();
+        GameController.Instance.SwitchSides();
     }
 }

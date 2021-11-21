@@ -6,8 +6,11 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public static GameController Instance { get; private set; }
+    public bool PlayerIsWhite = true;
+    public bool IsPlayerTurn = true;
+    public Tile[,] tiles { get; private set; }
     public Tile TilePrefab;
-    public Tile[,] tiles{ get; private set; }
+    public List<System.Action<bool>> OnNewTurn = new List<System.Action<bool>>();
 
     [SerializeField]
     private int rows = 0;
@@ -19,9 +22,6 @@ public class GameController : MonoBehaviour
     private ShogiPiece[] EnemyPieces = null;
     [SerializeField]
     private ShogiPiece empty = null;
-
-    public static bool PlayerIsWhite = true;
-    public static bool IsPlayerTurn = true;
     //public UnityEvent manualRestart;
 
     //private Tile selected;
@@ -73,9 +73,13 @@ public class GameController : MonoBehaviour
             ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
         }
     }
-    public static void SwitchSides()
+    public void SwitchSides()
     {
         IsPlayerTurn = !IsPlayerTurn;
+        foreach(System.Action<bool> listener in OnNewTurn)
+        {
+
+        }
         //if (kingIsAlive) { } for later to end game
     }
 
