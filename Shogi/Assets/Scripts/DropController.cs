@@ -60,7 +60,7 @@ public class DropController : MonoBehaviour
     /// </summary>
     /// <param name="isPlayerPool"></param>
     /// <param name="piece"></param>
-    public void AddToPool(bool isPlayerPool, ShogiPiece piece)
+    public void ManipulatePool(bool isPlayerPool, ShogiPiece piece, int byAmount)
     {
         if (isPlayerPool)
         {
@@ -68,7 +68,7 @@ public class DropController : MonoBehaviour
             {
                 if(droppable.DroppablePiece == piece)
                 {
-                    droppable.IncrementDrop();
+                    droppable.ChangeAmountBy(byAmount);
                     break;
                 }
             }
@@ -78,7 +78,7 @@ public class DropController : MonoBehaviour
             {
                 if (droppable.DroppablePiece == piece)
                 {
-                    droppable.IncrementDrop();
+                    droppable.ChangeAmountBy(byAmount);
                     break;
                 }
             }
@@ -96,6 +96,10 @@ public class DropController : MonoBehaviour
     /// <param name="droppablePiece"></param>
     public void playerWantsToDrop(ShogiPiece droppablePiece)
     {
+        if(_selectedPiece != empty)
+        {
+            _cancelDrop(new int2(0,0));
+        }
         _selectedPiece = droppablePiece;
         _highlightDroppableTiles(droppablePiece);
     }
@@ -137,8 +141,8 @@ public class DropController : MonoBehaviour
                         // For each tile in column...
                         for (int i = 0; i < tiles.GetLength(0); i++) // TODO: get the columns/width somehow
                         {
-                            Tile columnTile = tiles[potentialTile.Coordinates.x, i];
-                            if (columnTile.ShogiPiece.name == "Pawn")
+                            Tile columnTile = tiles[i, potentialTile.Coordinates.y];
+                            if (columnTile.ShogiPiece.name == "Pawn" && columnTile.IsPlayerOwned == _gameController.IsPlayerTurn)
                             {
                                 potentialTile.OnPlayerClicked = _cancelDrop;
                                 return;
@@ -167,7 +171,7 @@ public class DropController : MonoBehaviour
                         }
                         break;
                     }
-                case "lance":
+                case "Lance":
                     {
                         // Case (4): No Valid Moves
                         if (_gameController.IsPlayerTurn == true)
@@ -188,7 +192,7 @@ public class DropController : MonoBehaviour
                         }
                         break;
                     }
-                case "knight":
+                case "Knight":
                     {
                         // Case (4): No Valid Moves
                         if (_gameController.IsPlayerTurn == true)
@@ -225,13 +229,23 @@ public class DropController : MonoBehaviour
     private void _dropToTile (int2 coord)
     {
         Tile tile = _gameController.tiles[coord.x, coord.y];
-
+        // set player state
+        tile.IsPlayerOwned = _gameController.IsPlayerTurn;
+        // decrement pool
+        ManipulatePool(_gameController.IsPlayerTurn, _selectedPiece, -1);
+        // set piece down
         tile.SetShogiPiece(_selectedPiece);
+        _selectedPiece = empty;
+        // turn is over
+        _gameController.SwitchSides();
     }
 
     private void _cancelDrop (int2 coord)
     {
         _selectedPiece = null;
-        _gameController.ResetTileOnPlayerClicked(coord);
+        _gameController.ForAllTiles((Tile tile) =>
+        {
+            _gameController.ResetTileOnPlayerClicked(tile.Coordinates);
+        });
     }
 }

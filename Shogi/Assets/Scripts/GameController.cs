@@ -72,6 +72,8 @@ public class GameController : MonoBehaviour
             tiles[row, column].RefreshDisplay();
             ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
         }
+
+        OnNewTurn.Add(_resetBoardClickActions);
     }
     public void SwitchSides()
     {
@@ -85,7 +87,9 @@ public class GameController : MonoBehaviour
 
     public void ResetTileOnPlayerClicked(int2 coord)
     {
-        tiles[coord.x, coord.y].OnPlayerClicked = _onTileSelected;
+        Tile tile = tiles[coord.x, coord.y];
+        tile.OnPlayerClicked = _onTileSelected;
+        tile.Unhighlight();
     }
 
     public void ForAllTiles(System.Action<Tile> callback)
@@ -211,7 +215,7 @@ public class GameController : MonoBehaviour
             toTile.IsPlayerOwned = fromTile.IsPlayerOwned;
             if(toTile.ShogiPiece != empty)
             {
-                DropController.Instance.AddToPool(IsPlayerTurn, toTile.ShogiPiece);
+                DropController.Instance.ManipulatePool(IsPlayerTurn, toTile.ShogiPiece, 1);
             }
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
@@ -377,6 +381,15 @@ public class GameController : MonoBehaviour
     private bool _coordInBounds(int2 coord)
     {
         return coord.x >= 0 && coord.x < columns && coord.y >= 0 && coord.y < rows;
+    }
+
+    private void _resetBoardClickActions(bool playerTurn)
+    {
+        ForAllTiles((Tile tile) =>
+        {
+            tile.Unhighlight();
+            tile.OnPlayerClicked = _onTileSelected;
+        });
     }
 
     /// <summary>
