@@ -20,15 +20,11 @@ public class Droppable : MonoBehaviour
     private GameController _gameController;
     private int _dropAmount = 0;
 
-    private void Awake()
-    {
-        _dropController = DropController.Instance;
-        _gameController = GameController.Instance;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
+        _dropController = DropController.Instance;
+        _gameController = GameController.Instance;
         _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
         SetDropAmount(_dropAmount);
     }
