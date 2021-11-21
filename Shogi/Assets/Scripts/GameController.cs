@@ -78,7 +78,7 @@ public class GameController : MonoBehaviour
         IsPlayerTurn = !IsPlayerTurn;
         foreach(System.Action<bool> listener in OnNewTurn)
         {
-
+            listener(IsPlayerTurn);
         }
         //if (kingIsAlive) { } for later to end game
     }
