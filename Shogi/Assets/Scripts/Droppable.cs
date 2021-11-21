@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Droppable : MonoBehaviour
 {
-    [SerializeField]
-    private ShogiPiece DroppablePiece = null;
+    public ShogiPiece DroppablePiece = null;
+
     [SerializeField]
     private Button _button = null;
     [SerializeField]
@@ -27,12 +27,20 @@ public class Droppable : MonoBehaviour
         _gameController = GameController.Instance;
         _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
         SetDropAmount(_dropAmount);
+        // TODO: on Game Controller's On New Turn Event, make the buttons interactable or not.
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void IncrementDrop()
+    {
+        _dropAmount++;
+        _dropText.text = _dropAmount.ToString();
+        _button.interactable = _dropAmount == 0 ? false : true;
     }
 
     public void SetDropAmount(int startAmount)

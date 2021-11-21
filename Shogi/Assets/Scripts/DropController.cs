@@ -12,9 +12,9 @@ public class DropController : MonoBehaviour
     }
     private GameController _gameController;
     [SerializeField]
-    private Droppable[] _enemyDroppable;
+    private Droppable[] _enemyDroppable = null;
     [SerializeField]
-    private Droppable[] _playerDroppable;
+    private Droppable[] _playerDroppable = null;
     [SerializeField]
     private ShogiPiece empty = null;
 
@@ -53,6 +53,36 @@ public class DropController : MonoBehaviour
     public void Init(int[] enemyDroppable, int[] playerDroppable)
     {
 
+    }
+
+    /// <summary>
+    /// Adds the given piece to the Player's Drop Pool
+    /// </summary>
+    /// <param name="isPlayerPool"></param>
+    /// <param name="piece"></param>
+    public void AddToPool(bool isPlayerPool, ShogiPiece piece)
+    {
+        if (isPlayerPool)
+        {
+            foreach(Droppable droppable in _playerDroppable)
+            {
+                if(droppable.DroppablePiece == piece)
+                {
+                    droppable.IncrementDrop();
+                    break;
+                }
+            }
+        } else
+        {
+            foreach(Droppable droppable in _enemyDroppable)
+            {
+                if (droppable.DroppablePiece == piece)
+                {
+                    droppable.IncrementDrop();
+                    break;
+                }
+            }
+        }
     }
 
     /// <summary>

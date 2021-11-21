@@ -209,6 +209,10 @@ public class GameController : MonoBehaviour
             Tile toTile = _getTileFromCoord(to);
 
             toTile.IsPlayerOwned = fromTile.IsPlayerOwned;
+            if(toTile.ShogiPiece != empty)
+            {
+                DropController.Instance.AddToPool(IsPlayerTurn, toTile.ShogiPiece);
+            }
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
             fromTile.SetShogiPiece(empty);
