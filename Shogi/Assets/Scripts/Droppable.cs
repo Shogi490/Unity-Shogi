@@ -18,7 +18,7 @@ public class Droppable : MonoBehaviour
 
     private DropController _dropController;
     private GameController _gameController;
-    private int _dropAmount = 1;
+    private int _dropAmount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,7 @@ public class Droppable : MonoBehaviour
         _gameController = GameController.Instance;
         _button.interactable = (_gameController.IsPlayerTurn == _isPlayer && _dropAmount > 0) ? true : false;
         _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
-        SetDropAmount(_dropAmount);
+        InitDropAmount(_dropAmount);
         _gameController.OnNewTurn.Add(_enableButtonOnTurn);
     }
 
@@ -43,7 +43,7 @@ public class Droppable : MonoBehaviour
         _dropText.text = _dropAmount.ToString();
     }
 
-    public void SetDropAmount(int startAmount)
+    public void InitDropAmount(int startAmount)
     {
         _dropAmount = startAmount;
         _dropText.text = _dropAmount.ToString();
