@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
   m_Name: SilverGeneral
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 21300000, guid: f96c291789fbd2a40a949317bffaeffe, type: 3}
+  WSprite: {fileID: 21300000, guid: 25805f90643f59f4283d5a5106a3cf31, type: 3}
   BSprite: {fileID: 21300000, guid: fd856f098dd07ff498963e048326e565, type: 3}
+  TSprite: {fileID: 0}
   Name: Silver General
   Value: 5
   movementOptions: 02000000

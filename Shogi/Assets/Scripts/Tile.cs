@@ -15,13 +15,25 @@ public class Tile : MonoBehaviour
     private Image Image = null;
     [SerializeField]
     private Text Text = null;
-
+    
     [SerializeField]
     private GameObject _promotionPrompt = null;
     [SerializeField]
     private Image _noPromotionImage = null;
     [SerializeField]
     private Image _yesPromotionImage = null;
+    [SerializeField]
+    private Image _PromoteText = null;
+    
+
+    [SerializeField]
+    private Text playTimeText = null;
+    [SerializeField]
+    private string playTime;
+    [SerializeField]
+    private float howLong;
+    [SerializeField]
+    private int howLongRound;
 
     // stores where the tile is within the playgrid
     public int2 Coordinates;
@@ -41,7 +53,7 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public void OnClick()
@@ -96,17 +108,29 @@ public class Tile : MonoBehaviour
         // Update the Promotion Prompt
         if (_shogiPiece.Promotable)
         {
+            // _PromoteText.sprite = _shogiPiece.TSprite;
             _noPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
-            _yesPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite;
+            _yesPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite; 
         }
-    }
 
+    }
+   
+	
+    //piece promotion
     public void PromptForPromotion()
     {
         if (_shogiPiece.Promotable && IsPlayerOwned == GameController.IsPlayerTurn)
         {
+            _promotionPrompt.AddComponent<RectTransform>();
+            _promotionPrompt.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 70);
             _promotionPrompt.SetActive(true);
-        } else
+
+            //_promotionPrompt.transform.localScale = new Vector3(2, 2, 2);
+            //_promotionPrompt.transform.position = new Vector3(300, 200, 0);
+            //note can only click on the user promotion piece for it to register a click 
+            RefreshDisplay();
+        } 
+        else
         {
             GameController.SwitchSides();
         }
@@ -123,5 +147,24 @@ public class Tile : MonoBehaviour
         if(willPromote) SetShogiPiece(_shogiPiece.PromotedPiece);
         _promotionPrompt.SetActive(false);
         GameController.SwitchSides();
+    }
+
+    //round timer work in progress 
+    public void TimePlayed()
+    {
+
+        howLong += Time.deltaTime;
+        howLongRound = Mathf.RoundToInt(howLong);
+        playTime = "time" + howLongRound;
+        playTimeText.text = playTime;
+
+        if (howLongRound == 60)
+        {
+            //GameController.SwitchSides();
+            howLongRound = 0;
+        }
+        //if(turn has ended)
+        //{ howLongRound = 0; }
+
     }
 }

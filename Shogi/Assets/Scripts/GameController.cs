@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ShogiPiece empty = null;
 
+
     public static bool PlayerIsWhite = true;
     public static bool IsPlayerTurn = true;
     public static void SwitchSides()
@@ -30,7 +31,7 @@ public class GameController : MonoBehaviour
     //public UnityEvent manualRestart;
 
     //private Tile selected;
-    private int2 selectedCoord = new int2(-1,-1);
+    private int2 selectedCoord = new int2(-1, -1);
 
     // Start is called before the first frame update
     void Awake()
@@ -50,7 +51,7 @@ public class GameController : MonoBehaviour
         }
 
         // set the player's initial pieces
-        for(int i = 0; i < PlayerPieces.Length; i++)
+        for (int i = 0; i < PlayerPieces.Length; i++)
         {
             int row = rows - (1 + (i / columns));
             int column = columns - (1 + (i % columns));
@@ -97,7 +98,7 @@ public class GameController : MonoBehaviour
     private void _unselectTile()
     {
         Tile selectedTile = _getTileFromCoord(selectedCoord);
-        if(selectedTile != null)
+        if (selectedTile != null)
         {
             // there is a selected Tile
             _forMovableTilesFrom(selectedTile, (Tile oldMovable) =>
@@ -150,7 +151,7 @@ public class GameController : MonoBehaviour
     /// <returns>Whether or not the piece at the Tile can be promoted</returns>
     private bool _tileCanPromote(Tile newlyMoved)
     {
-        if(newlyMoved.IsPlayerOwned)
+        if (newlyMoved.IsPlayerOwned)
         {
             // check the top 3 rows
             return newlyMoved.Coordinates.x < 3;
@@ -185,7 +186,8 @@ public class GameController : MonoBehaviour
             fromTile.SetShogiPiece(empty);
 
             return true;
-        } else
+        }
+        else
         {
             return false;
         }

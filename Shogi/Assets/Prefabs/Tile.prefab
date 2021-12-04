@@ -593,11 +593,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shogiPiece: {fileID: 11400000, guid: bb8e21e5802b64648ae66af8956b1490, type: 2}
+  PromoteText: {fileID: 0}
   Image: {fileID: 4745765321645652263}
   Text: {fileID: 4285484355539110631}
   _promotionPrompt: {fileID: 4521280003689339431}
   _noPromotionImage: {fileID: 14082179512163748}
   _yesPromotionImage: {fileID: 3572957884251417545}
+  _PromoteText: {fileID: 0}
+  playTimeText: {fileID: 0}
+  playTime: 
+  howLong: 0
+  howLongRound: 0
   Coordinates:
     x: 0
     y: 0

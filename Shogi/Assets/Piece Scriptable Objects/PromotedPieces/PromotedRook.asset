@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
   m_Name: PromotedRook
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 21300000, guid: e8e52a750d4b2934a9e4cfcbb79488af, type: 3}
-  BSprite: {fileID: 21300000, guid: 1a5d098a089a617459741050dc22eac4, type: 3}
+  WSprite: {fileID: 21300000, guid: 9b57d941efc075142b041eb0affb0ea1, type: 3}
+  BSprite: {fileID: 21300000, guid: b11b25e9d76b2da4fa0d6ebe4a3510d4, type: 3}
+  TSprite: {fileID: 21300000, guid: 82bd2f02b5623eb4c8e511c6b99ba1d5, type: 3}
   Name: Promoted Rook
   Value: 13
   movementOptions: 0000000006000000
