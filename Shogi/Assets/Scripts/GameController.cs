@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
     private ShogiPiece[] EnemyPieces = null;
     [SerializeField]
     private ShogiPiece empty = null;
+    private ShogiPiece king = null;
+
 
     public static bool PlayerIsWhite = true;
     public static bool IsPlayerTurn = true;
@@ -30,7 +32,7 @@ public class GameController : MonoBehaviour
     //public UnityEvent manualRestart;
 
     //private Tile selected;
-    private int2 selectedCoord = new int2(-1,-1);
+    private int2 selectedCoord = new int2(-1, -1);
 
     // Start is called before the first frame update
     void Awake()
@@ -50,7 +52,7 @@ public class GameController : MonoBehaviour
         }
 
         // set the player's initial pieces
-        for(int i = 0; i < PlayerPieces.Length; i++)
+        for (int i = 0; i < PlayerPieces.Length; i++)
         {
             int row = rows - (1 + (i / columns));
             int column = columns - (1 + (i % columns));
@@ -97,7 +99,7 @@ public class GameController : MonoBehaviour
     private void _unselectTile()
     {
         Tile selectedTile = _getTileFromCoord(selectedCoord);
-        if(selectedTile != null)
+        if (selectedTile != null)
         {
             // there is a selected Tile
             _forMovableTilesFrom(selectedTile, (Tile oldMovable) =>
@@ -150,7 +152,7 @@ public class GameController : MonoBehaviour
     /// <returns>Whether or not the piece at the Tile can be promoted</returns>
     private bool _tileCanPromote(Tile newlyMoved)
     {
-        if(newlyMoved.IsPlayerOwned)
+        if (newlyMoved.IsPlayerOwned)
         {
             // check the top 3 rows
             return newlyMoved.Coordinates.x < 3;
@@ -160,6 +162,77 @@ public class GameController : MonoBehaviour
             return newlyMoved.Coordinates.x >= rows - 3;
         }
     }
+
+
+
+
+    private bool _checked(Tile targetTile, System.Action<Tile> callback)
+    {
+        List<Tile> moveableTiles = _getMovableTilesFrom(targetTile);
+
+        // for each of those tiles, callback(movableTile);
+        foreach (Tile tile in moveableTiles)
+        {
+            if (tile != king)
+                callback(tile);
+            else
+            {
+                return true;
+                Debug.Log("check");
+            }
+        }
+        return false;
+       
+    }
+
+    /*
+    //checks if king is in checkmate
+    private void _isCheckmate()
+    {
+        if(_checked() == true)
+        {
+            Debug.Log("you are in check");
+            if (_kingNoMove() == true)
+            {
+                if (_noBlockOption() == true)
+                {
+                    Debug.Log("you are in checkmate");
+                    _endGame();
+                }
+            }
+        }
+    }
+    //checks if king has valid move
+    private bool _kingNoMove()
+    {
+            return true;
+    }
+
+    //checks if you can block check 
+    private bool _noBlockOption()
+    {
+        return true;
+    }
+
+    
+
+    /// <summary>
+    /// ends game 
+    /// </summary>
+    private void _endGame()
+    {
+        if (IsPlayerTurn == true)
+            Debug.Log("White team won!");
+        else
+            Debug.Log("Black team won!");
+    }
+
+
+    */
+
+
+
+
 
     /// <summary>
     /// Moves the ShogiPiece from the first coordinate to the second coordinate.
