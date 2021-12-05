@@ -178,7 +178,7 @@ public class GameController : MonoBehaviour
         }
         else return false;
     }
-    //if true check if checkmate is true if not restrict player moves to only one that prevent check
+    //if true check if checkmate is true if not restrict player moves to only one that prevent check.
 
 
 
