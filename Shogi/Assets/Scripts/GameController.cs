@@ -15,11 +15,14 @@ public class GameController : MonoBehaviour
     private ShogiPiece[] EnemyPieces = null;
     [SerializeField]
     private ShogiPiece empty = null;
-    private ShogiPiece king = null;
+    [SerializeField]
+    //private ShogiPiece king = null;
+
 
 
     public static bool PlayerIsWhite = true;
     public static bool IsPlayerTurn = true;
+    public static bool IsCheckable = true;
     public static void SwitchSides()
     {
         IsPlayerTurn = !IsPlayerTurn;
@@ -165,25 +168,20 @@ public class GameController : MonoBehaviour
 
 
 
-
-    private bool _checked(Tile targetTile, System.Action<Tile> callback)
+    //checks if a checkable piece (king) is one of the target pieces
+    private bool _checked(Tile targetTile)
     {
-        List<Tile> moveableTiles = _getMovableTilesFrom(targetTile);
-
-        // for each of those tiles, callback(movableTile);
-        foreach (Tile tile in moveableTiles)
+        if (targetTile.ShogiPiece.Checkable)
         {
-            if (tile != king)
-                callback(tile);
-            else
-            {
-                return true;
-                Debug.Log("check");
-            }
+            return true;
+            Debug.Log("check");
         }
-        return false;
-       
+        else return false;
     }
+    //if true check if checkmate is true if not restrict player moves to only one that prevent check
+
+
+
 
     /*
     //checks if king is in checkmate
@@ -207,8 +205,7 @@ public class GameController : MonoBehaviour
     {
             return true;
     }
-
-    //checks if you can block check 
+    //checks if you can block check or take threating piece
     private bool _noBlockOption()
     {
         return true;
@@ -225,6 +222,7 @@ public class GameController : MonoBehaviour
             Debug.Log("White team won!");
         else
             Debug.Log("Black team won!");
+    //destroy/reset board and pieces
     }
 
 
@@ -278,8 +276,10 @@ public class GameController : MonoBehaviour
         // for each of those tiles, callback(movableTile);
         foreach(Tile tile in moveableTiles)
         {
-            if(tile != null) callback(tile);
+            _checked(targetTile);
+            if (tile != null) callback(tile);
         }
+        
     }
 
     private List<Tile> _getMovableTilesFrom(Tile targetTile)

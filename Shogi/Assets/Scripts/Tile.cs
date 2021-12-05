@@ -32,6 +32,8 @@ public class Tile : MonoBehaviour
     // an action that called when the Tile is clicked. This is set by the game controller. 
     public Action<int2> OnPlayerClicked;
 
+    
+
     // Start is called before the first frame update
     void Awake()
     {

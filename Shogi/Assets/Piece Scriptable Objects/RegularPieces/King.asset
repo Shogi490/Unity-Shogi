@@ -17,4 +17,6 @@ MonoBehaviour:
   Name: King
   Value: 1000
   movementOptions: 00000000
+  Promotable: 0
+  Checkable: 1
   PromotedPiece: {fileID: 11400000}
