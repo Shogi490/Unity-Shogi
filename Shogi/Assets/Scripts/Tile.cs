@@ -22,8 +22,6 @@ public class Tile : MonoBehaviour
     private Image _noPromotionImage = null;
     [SerializeField]
     private Image _yesPromotionImage = null;
-    [SerializeField]
-    private Image _PromoteText = null;
     
 
     [SerializeField]
@@ -34,6 +32,8 @@ public class Tile : MonoBehaviour
     private float howLong;
     [SerializeField]
     private int howLongRound;
+    
+    
 
     // stores where the tile is within the playgrid
     public int2 Coordinates;
@@ -59,6 +59,8 @@ public class Tile : MonoBehaviour
     public void OnClick()
     {
         OnPlayerClicked.Invoke(Coordinates);
+        
+
     }
 
     public void SetShogiPiece(ShogiPiece shogiPiece)
@@ -108,7 +110,6 @@ public class Tile : MonoBehaviour
         // Update the Promotion Prompt
         if (_shogiPiece.Promotable)
         {
-            // _PromoteText.sprite = _shogiPiece.TSprite;
             _noPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
             _yesPromotionImage.sprite = (GameController.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite; 
         }

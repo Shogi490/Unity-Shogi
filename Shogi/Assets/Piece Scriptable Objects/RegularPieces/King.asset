@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 5f9a55e9e25d3264fadfd64e4c5d94ae, type: 3}
   BSprite: {fileID: 21300000, guid: 72ada9abfb79d5b4f9fd03ac0ff2f69b, type: 3}
+  TSprite: {fileID: 0}
   Name: King
   Value: 1000
   movementOptions: 00000000
+  Promotable: 0
   PromotedPiece: {fileID: 11400000}
