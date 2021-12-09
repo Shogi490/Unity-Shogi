@@ -23,6 +23,17 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private Image _yesPromotionImage = null;
 
+
+    [SerializeField]
+    private Text playTimeText = null;
+    [SerializeField]
+    private string playTime;
+    [SerializeField]
+    private float howLong;
+    [SerializeField]
+    private int howLongRound;
+
+
     // stores where the tile is within the playgrid
     public int2 Coordinates;
     // determines whether (if the tile is populated with a Shogi Piece) belongs to the player or not.
@@ -106,6 +117,11 @@ public class Tile : MonoBehaviour
         if (_shogiPiece.Promotable && IsPlayerOwned == GameController.Instance.IsPlayerTurn)
         {
             _promotionPrompt.SetActive(true);
+            //_promotionPrompt.AddComponent<RectTransform>();
+            //_promotionPrompt.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 70);
+            //_promotionPrompt.transform.localScale = new Vector3(2, 2, 2);
+            //_promotionPrompt.transform.position = new Vector3(300, 200, 0);
+            //note can only click on the user promotion piece for it to register a click 
         } else
         {
             GameController.Instance.SwitchSides();
@@ -123,5 +139,24 @@ public class Tile : MonoBehaviour
         if(willPromote) SetShogiPiece(_shogiPiece.PromotedPiece);
         _promotionPrompt.SetActive(false);
         GameController.Instance.SwitchSides();
+    }
+
+ //round timer work in progress 
+    public void TimePlayed()
+    {
+
+        howLong += Time.deltaTime;
+        howLongRound = Mathf.RoundToInt(howLong);
+        playTime = "time" + howLongRound;
+        playTimeText.text = playTime;
+
+        if (howLongRound == 60)
+        {
+            //GameController.SwitchSides();
+            howLongRound = 0;
+        }
+        //if(turn has ended)
+        //{ howLongRound = 0; }
+
     }
 }
