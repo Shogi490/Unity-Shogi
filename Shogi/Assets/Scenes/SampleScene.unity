@@ -1411,7 +1411,7 @@ MonoBehaviour:
   fitType: 4
   Rows: 7
   Columns: 1
-  CellSize: {x: 420.22192, y: 154.36853}
+  CellSize: {x: 420.22192, y: 154.44795}
   Spacing: {x: 0, y: 0}
   FixedX: 0
   FixedY: 0
@@ -1671,7 +1671,7 @@ MonoBehaviour:
   fitType: 4
   Rows: 7
   Columns: 1
-  CellSize: {x: 420.22192, y: 154.36853}
+  CellSize: {x: 420.22192, y: 154.44795}
   Spacing: {x: 0, y: 0}
   FixedX: 0
   FixedY: 0

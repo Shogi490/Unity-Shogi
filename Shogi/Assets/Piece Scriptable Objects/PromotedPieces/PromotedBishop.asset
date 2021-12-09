@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad26bb20cd73fc24091521a74fdab96b, type: 3}
   m_Name: PromotedBishop
   m_EditorClassIdentifier: 
-  WSprite: {fileID: 21300000, guid: 05aad1a4f5bd0d947b837127f74b1303, type: 3}
-  BSprite: {fileID: 21300000, guid: 8d96b39c384dcb041842338face425d4, type: 3}
+  WSprite: {fileID: 21300000, guid: dc632166ef0b21842af594121a0a57de, type: 3}
+  BSprite: {fileID: 21300000, guid: f8a170016c0f1334a8bb7e6c42e5b23b, type: 3}
   Name: Promoted Bishop
   Value: 12
   movementOptions: 0000000005000000
