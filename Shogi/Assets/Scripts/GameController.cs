@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
     //public UnityEvent manualRestart;
 
-    //private Tile selected;
+    //private Tile selected; 
     private int2 selectedCoord = new int2(-1,-1);
 
     // Start is called before the first frame update

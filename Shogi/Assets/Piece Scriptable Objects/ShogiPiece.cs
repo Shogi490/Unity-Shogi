@@ -15,7 +15,7 @@ public class ShogiPiece : ScriptableObject
     public ShogiPiece PromotedPiece;
 }
 
-public enum MovementOption
+public enum MovementOption 
 {
     King,
     GoldGeneral,
