@@ -12,10 +12,10 @@ public class Timer : MonoBehaviour
     private void Start()
     {
         
-	if(//botton is clicked)
-	{        
+	//if(//botton is clicked)
+	//{        
 	   timerIsRunning = true;
-	}
+	//}
     }
     void Update()
     {
