@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     public Tile[,] tiles { get; private set; }
     public Tile TilePrefab;
     public List<System.Action<bool>> OnNewTurn = new List<System.Action<bool>>();
+    private Timer timer;
+
 
     [SerializeField]
     private int rows = 0;
@@ -38,6 +40,7 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
 
         // The below populates the tiles array.
         tiles = new Tile[rows, columns];
@@ -74,6 +77,7 @@ public class GameController : MonoBehaviour
         }
 
         OnNewTurn.Add(_resetBoardClickActions);
+        timer = GameObject.FindObjectOfType<Timer>();
     }
     public void SwitchSides()
     {
@@ -82,7 +86,7 @@ public class GameController : MonoBehaviour
         {
             listener(IsPlayerTurn);
         }
-        //if (kingIsAlive) { } for later to end game
+        timer.updateTime(60);
     }
 
     public void ResetTileOnPlayerClicked(int2 coord)

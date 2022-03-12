@@ -6,25 +6,23 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public float timeRemaining = 60; //one minute 
+
+    public float timeRemaining = 60;
     public bool timerIsRunning = false;
     public Text timeText;
-    private void Start()
-    {
-        
-	//if(//botton is clicked)
-	//{        
-	   timerIsRunning = true;
-	//}
-    }
+    [SerializeField]
+    private Button _button = null;
+    
+
     void Update()
     {
+        
         if (timerIsRunning)
         {
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
-		DisplayTime(timeRemaining);
+		        DisplayTime(timeRemaining);
             }
             else
             {
@@ -39,5 +37,17 @@ public class Timer : MonoBehaviour
     {
 	float seconds = Mathf.FloorToInt(timeToDisplay % 60);
 	timeText.text = string.Format("{00}", seconds);
+    }
+
+    public void updateTime(float x)
+    {
+        timeRemaining = x;
+    }
+
+
+
+    public void OnClick()
+    {
+         timerIsRunning = true;  
     }
 }
