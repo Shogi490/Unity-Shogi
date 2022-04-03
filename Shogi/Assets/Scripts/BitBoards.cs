@@ -59,5 +59,84 @@ public class BitBoards : MonoBehaviour
         }
     }
 
-    
+    public static string getBoardAsString()
+    {
+        string result = "";
+        Tile[,] tiles = GameController.Instance.tiles;
+        for(int i = 0; i < tiles.GetLength(0); i++)
+        {
+            for(int j = 0; j < tiles.GetLength(1); j++)
+            {
+                Tile tile = tiles[i, j];
+                if(tile.ShogiPiece && tile.ShogiPiece.Name != "")
+                {
+                    result += "1";
+                } else
+                {
+                    result += "0";
+                }
+            }
+        }
+        return result;
+    }
+
+    public static string getPieceAsString(ShogiPiece piece, bool isWhite)
+    {
+        string result = "";
+        Tile[,] tiles = GameController.Instance.tiles;
+        for (int i = 0; i < tiles.GetLength(0); i++)
+        {
+            for (int j = 0; j < tiles.GetLength(1); j++)
+            {
+                Tile tile = tiles[i, j];
+                bool pieceIsWhite = tile.IsPlayerOwned == GameController.Instance.PlayerIsWhite;
+                if (tile.ShogiPiece && tile.ShogiPiece == piece && (pieceIsWhite == isWhite))
+                {
+                    result += "1";
+                }
+                else
+                {
+                    result += "0";
+                }
+            }
+        }
+        return result;
+    }
+
+    /*
+    should look something like this:
+    1   1   1   1   1   1   1   1   1
+    0   1   0   0   0   0   0   1   0
+    1   1   1   1   1   1   1   1   1
+    0   0   0   0   0   0   0   0   0
+    0   0   0   0   0   0   0   0   0
+    0   0   0   0   0   0   0   0   0
+    1   1   1   1   1   1   1   1   1
+    0   1   0   0   0   0   0   1   0
+    1   1   1   1   1   1   1   1   1
+     */
+    public static void displayBoardString(string boardString)
+    {
+        char[] board = boardString.ToCharArray();
+        if(board.Length != 81)
+        {
+            Debug.LogError($"displayBoardString was given an invalid length string: {boardString}");
+            return;
+        }
+        int limit = 9;
+        int count = 0;
+        string result = "";
+        for(int i = 0; i < board.Length; i++)
+        {
+            result += board[i];
+            result += "\t";
+            count++;
+            if(count >= limit)
+            {
+                count = 0;
+                result += "\n";
+            }
+        }
+        Debug.Log(result);
+    }
 }

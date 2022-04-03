@@ -77,6 +77,17 @@ public class GameController : MonoBehaviour
     }
     public void SwitchSides()
     {
+        // testing board string stuff
+        // uncomment the following if you want to see it in action (check the Console after making a move).
+        // displays the board
+        //string currentBoardString = BitBoards.getBoardAsString();
+        //Debug.Log(currentBoardString);
+        //BitBoards.displayBoardString(currentBoardString);
+        // displays white pawns
+        //string currentPieceString = BitBoards.getPieceAsString(PlayerPieces[18],true);
+        //Debug.Log(currentPieceString);
+        //BitBoards.displayBoardString(currentPieceString);
+
         IsPlayerTurn = !IsPlayerTurn;
         foreach(System.Action<bool> listener in OnNewTurn)
         {
