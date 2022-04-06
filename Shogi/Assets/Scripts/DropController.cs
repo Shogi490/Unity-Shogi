@@ -14,7 +14,7 @@ public class DropController : MonoBehaviour
     [SerializeField]
     private Droppable[] _enemyDroppable = null;
     [SerializeField]
-    private Droppable[] _playerDroppable = null;
+    private Droppable[] _playerDroppable = null; 
     [SerializeField]
     private ShogiPiece empty = null;
 
