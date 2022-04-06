@@ -6,17 +6,13 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-
     public float timeRemaining = 60;
     public bool timerIsRunning = false;
     public Text timeText;
-    [SerializeField]
-    private Button _button = null;
     
 
     void Update()
     {
-        
         if (timerIsRunning)
         {
             if (timeRemaining > 0)
@@ -29,10 +25,11 @@ public class Timer : MonoBehaviour
                 Debug.Log("Time has run out!");
                 timeRemaining = 0;
                 timerIsRunning = false;
-		//end game
+		        //end game
             }
         }
     }
+
 	void DisplayTime(float timeToDisplay)
     {
 	float seconds = Mathf.FloorToInt(timeToDisplay % 60);
@@ -42,12 +39,5 @@ public class Timer : MonoBehaviour
     public void updateTime(float x)
     {
         timeRemaining = x;
-    }
-
-
-
-    public void OnClick()
-    {
-         timerIsRunning = true;  
     }
 }
