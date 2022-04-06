@@ -11,8 +11,6 @@ public class GameController : MonoBehaviour
     public Tile[,] tiles { get; private set; }
     public Tile TilePrefab;
     public List<System.Action<bool>> OnNewTurn = new List<System.Action<bool>>();
-    private Timer timer;
-
 
     [SerializeField]
     private int rows = 0;
@@ -26,7 +24,7 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
     //public UnityEvent manualRestart;
 
-    //private Tile selected; 
+    //private Tile selected;
     private int2 selectedCoord = new int2(-1,-1);
 
     // Start is called before the first frame update
@@ -40,7 +38,6 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
 
         // The below populates the tiles array.
         tiles = new Tile[rows, columns];
@@ -77,7 +74,6 @@ public class GameController : MonoBehaviour
         }
 
         OnNewTurn.Add(_resetBoardClickActions);
-        timer = GameObject.FindObjectOfType<Timer>();
     }
     public void SwitchSides()
     {
@@ -86,7 +82,7 @@ public class GameController : MonoBehaviour
         {
             listener(IsPlayerTurn);
         }
-        timer.updateTime(60);
+        //if (kingIsAlive) { } for later to end game
     }
 
     public void ResetTileOnPlayerClicked(int2 coord)

@@ -18,7 +18,7 @@ public class Droppable : MonoBehaviour
 
     private DropController _dropController;
     private GameController _gameController;
-    private int _dropAmount = 0; 
+    private int _dropAmount = 0;
 
     // Start is called before the first frame update
     void Start()

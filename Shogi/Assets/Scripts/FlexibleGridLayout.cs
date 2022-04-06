@@ -18,7 +18,7 @@ public class FlexibleGridLayout : LayoutGroup
 
     public FitType fitType;
     public int Rows;
-    public int Columns; 
+    public int Columns;
     public Vector2 CellSize;
     public Vector2 Spacing;
     public bool FixedX;
