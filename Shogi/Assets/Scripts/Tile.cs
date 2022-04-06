@@ -18,20 +18,10 @@ public class Tile : MonoBehaviour
 
     [SerializeField]
     private GameObject _promotionPrompt = null;
-    [SerializeField]
+    [SerializeField] 
     private Image _noPromotionImage = null;
     [SerializeField]
     private Image _yesPromotionImage = null;
-
-
-    [SerializeField]
-    private Text playTimeText = null;
-    [SerializeField]
-    private string playTime;
-    [SerializeField]
-    private float howLong;
-    [SerializeField]
-    private int howLongRound;
 
 
     // stores where the tile is within the playgrid
@@ -139,24 +129,5 @@ public class Tile : MonoBehaviour
         if(willPromote) SetShogiPiece(_shogiPiece.PromotedPiece);
         _promotionPrompt.SetActive(false);
         GameController.Instance.SwitchSides();
-    }
-
- //round timer work in progress 
-    public void TimePlayed()
-    {
-
-        howLong += Time.deltaTime;
-        howLongRound = Mathf.RoundToInt(howLong);
-        playTime = "time" + howLongRound;
-        playTimeText.text = playTime;
-
-        if (howLongRound == 60)
-        {
-            //GameController.SwitchSides();
-            howLongRound = 0;
-        }
-        //if(turn has ended)
-        //{ howLongRound = 0; }
-
     }
 }
