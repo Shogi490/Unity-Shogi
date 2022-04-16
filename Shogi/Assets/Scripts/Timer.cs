@@ -7,15 +7,16 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
     public float timeRemaining = 60;
-    public bool timerIsRunning = false;
+    public bool timerIsRunning;
     public Text timeText;
+    private GameController _gameController;
     
 
     void Update()
     {
         if (timerIsRunning)
         {
-            if (timeRemaining > 0)
+            if (timeRemaining > 1)
             {
                 timeRemaining -= Time.deltaTime;
 		        DisplayTime(timeRemaining);
@@ -25,7 +26,8 @@ public class Timer : MonoBehaviour
                 Debug.Log("Time has run out!");
                 timeRemaining = 0;
                 timerIsRunning = false;
-		        //end game
+                _gameController = GameController.Instance;
+                _gameController.gameover(1);
             }
         }
     }
