@@ -5,6 +5,9 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
+
 public class Tile : MonoBehaviour
 {
     [SerializeField]
@@ -23,6 +26,10 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private Image _yesPromotionImage = null;
 
+    [SerializeField]
+    public bool PlayerWhite;
+    [SerializeField]
+    public bool PlayerBl;
 
     // stores where the tile is within the playgrid
     public int2 Coordinates;
@@ -42,8 +49,8 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-    }
+    
+    }   
 
     public void OnClick()
     {
@@ -79,10 +86,20 @@ public class Tile : MonoBehaviour
         // Add Text
         Text.text = _shogiPiece.Name.ToString();
         // Allocate correctly colored sprite
+        //react sets color true or false
+        PlayerWhite = false;
+        PlayerBl = true;
+
         if (GameController.Instance.PlayerIsWhite == IsPlayerOwned)
-        {
-            Image.sprite = _shogiPiece.WSprite;
-        } else
+        {   
+            if (PlayerWhite == true)
+            { Image.sprite = _shogiPiece.WSprite; }
+         
+            if (PlayerBl == true)
+            { Image.sprite = _shogiPiece.BlueSprite; }
+
+        }
+        else
         {
             Image.sprite = _shogiPiece.BSprite;
         }
