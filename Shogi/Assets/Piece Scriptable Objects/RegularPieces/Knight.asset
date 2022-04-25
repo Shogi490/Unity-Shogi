@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: a3956b77c84c56249a15fe447581566a, type: 3}
   BSprite: {fileID: 21300000, guid: 883a4447bc8829b40bae0196bea0a399, type: 3}
-  BlueSprite: {fileID: 21300000, guid: 895acce535011dc44a0a6f54b7940462, type: 3}
+  FSprite: {fileID: 0}
+  EFSprite: {fileID: 0}
+  MSprite: {fileID: 21300000, guid: 48814ea529bee7949b4fd8220177a1a4, type: 3}
+  EMSprite: {fileID: 0}
+  TileSprite: {fileID: 0}
   Name: Kight
   Value: 3
   movementOptions: 03000000

@@ -21,15 +21,21 @@ public class Tile : MonoBehaviour
 
     [SerializeField]
     private GameObject _promotionPrompt = null;
-    [SerializeField] 
+    [SerializeField]
     private Image _noPromotionImage = null;
     [SerializeField]
     private Image _yesPromotionImage = null;
 
-    [SerializeField]
+   
     public bool PlayerWhite;
-    [SerializeField]
-    public bool PlayerBl;
+    public bool PlayerBlack;
+    public bool PlayerFanticy;
+    public bool PlayerMilitary;
+    public bool PlayerTile;
+
+    public bool BoardBrownWhite;
+    public bool BoardBlackWhite;
+    public bool BoardBrownGreen;
 
     // stores where the tile is within the playgrid
     public int2 Coordinates;
@@ -49,8 +55,8 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
-    }   
+
+    }
 
     public void OnClick()
     {
@@ -87,24 +93,50 @@ public class Tile : MonoBehaviour
         Text.text = _shogiPiece.Name.ToString();
         // Allocate correctly colored sprite
         //react sets color true or false
-        PlayerWhite = false;
-        PlayerBl = true;
+        ReactColorPick();
 
         if (GameController.Instance.PlayerIsWhite == IsPlayerOwned)
-        {   
+        {
             if (PlayerWhite == true)
-            { Image.sprite = _shogiPiece.WSprite; }
-         
-            if (PlayerBl == true)
-            { Image.sprite = _shogiPiece.BlueSprite; }
+            { 
+                Image.sprite = _shogiPiece.WSprite;
+                //_noPromotionImage.sprite = _shogiPiece.WSprite;
+                //_yesPromotionImage.sprite = _shogiPiece.WSprite;
+            }
 
+            if (PlayerBlack == true)
+            { Image.sprite = _shogiPiece.BSprite; }
+
+            if (PlayerFanticy == true)
+            { Image.sprite = _shogiPiece.FSprite; }
+
+            if (PlayerMilitary == true)
+            { Image.sprite = _shogiPiece.MSprite; }
+
+            if (PlayerTile == true)
+            { Image.sprite = _shogiPiece.EMSprite; }
         }
         else
         {
-            Image.sprite = _shogiPiece.BSprite;
+            if (PlayerWhite == true)
+            { Image.sprite = _shogiPiece.BSprite; }
+
+            if (PlayerBlack == true)
+            { Image.sprite = _shogiPiece.WSprite; }
+
+            if (PlayerFanticy == true)
+            { Image.sprite = _shogiPiece.EFSprite; }
+
+            if (PlayerMilitary == true)
+            { Image.sprite = _shogiPiece.EMSprite; }
+
+            if (PlayerTile == true)
+            { Image.sprite = _shogiPiece.EMSprite; }
         }
+
+
         // Highlight the Tile
-        if(IsHighlighted)
+        if (IsHighlighted)
         {
             Image.color = Color.green;
         } else
@@ -119,6 +151,18 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public void ReactColorPick()
+    {
+        PlayerWhite = false;
+        PlayerFanticy = false;
+        PlayerMilitary = true;
+        PlayerTile = false;
+
+        BoardBrownWhite = true;
+        BoardBlackWhite = false;
+        BoardBrownGreen = false;
+        //BoardBlueWhite = false;
+    }
     public void PromptForPromotion()
     {
         if (_shogiPiece.Promotable && IsPlayerOwned == GameController.Instance.IsPlayerTurn)
