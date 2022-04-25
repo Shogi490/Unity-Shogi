@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
@@ -24,6 +25,8 @@ public class GameController : MonoBehaviour
     private ShogiPiece[] EnemyPieces = null;
     [SerializeField]
     private ShogiPiece empty = null;
+    [SerializeField]
+    private string usi = "";
     //public UnityEvent manualRestart;
 
     //private Tile selected; 
@@ -152,8 +155,12 @@ public class GameController : MonoBehaviour
     /// <param name="selectedTile">The Tile that was clicked</param>
     private void _selectTile(Tile selectedTile)
     {
-        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned == IsPlayerTurn)
+        if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned == IsPlayerTurn && selectedTile.IsHighlighted == false)
         {
+
+            //Old Highlight/tile select code
+
+            /*
             // highlight movable Tiles
             _forMovableTilesFrom(selectedTile, (Tile newMovable) =>
             {
@@ -176,8 +183,47 @@ public class GameController : MonoBehaviour
                     }
                 };
             });
-            selectedCoord = selectedTile.Coordinates;
+            selectedCoord = selectedTile.Coordinates; 
+            */
+
+            sendReact("WantsToMove", selectedTile.square);
+            
+            //creates half the USI using unicode values & coordinate data
+
+            int letter = 97;
+
+            letter += selectedTile.Coordinates.x;
+
+            usi = (Convert.ToChar(letter)).ToString() + (selectedTile.Coordinates.y + 1);
+
         }
+        else if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsHighlighted == true)
+        {
+            int letter = 97;
+
+            letter += selectedTile.Coordinates.x;
+
+            usi += (Convert.ToChar(letter)).ToString() + (selectedTile.Coordinates.y + 1);
+
+            sendReact("Move", usi);
+        }
+
+    }
+    
+    /// <summary>
+    /// Send react string indicating a piece has been selected to move, as well as square number of piece
+    /// </summary>
+    private void sendReact(string selectedPiece, int square)
+    {
+
+    }
+
+    /// <summary>
+    /// Send react string indicating a piece has been selected to move, as well as a USI string for the move of that piece
+    /// </summary>
+    private void sendReact(string selectedPiece, string usiString)
+    {
+
     }
 
     /// <summary>

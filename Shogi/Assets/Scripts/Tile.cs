@@ -32,6 +32,7 @@ public class Tile : MonoBehaviour
     public bool IsHighlighted = false;
     // an action that called when the Tile is clicked. This is set by the game controller. 
     public Action<int2> OnPlayerClicked;
+    public int square;
 
     // Start is called before the first frame update
     void Awake()
@@ -48,6 +49,8 @@ public class Tile : MonoBehaviour
     public void OnClick()
     {
         OnPlayerClicked.Invoke(Coordinates);
+        square = ((Coordinates.x * 9) - Coordinates.y - 72) * -1;
+        Debug.Log(square);
     }
 
     public void SetShogiPiece(ShogiPiece shogiPiece)
