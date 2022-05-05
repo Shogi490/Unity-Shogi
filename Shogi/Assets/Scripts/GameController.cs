@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 public class GameController : MonoBehaviour
 {
@@ -31,6 +32,11 @@ public class GameController : MonoBehaviour
 
     //private Tile selected; 
     private int2 selectedCoord = new int2(-1,-1);
+
+    [DllImport("__Internal")]
+    private static extern void TriggerReactStringEvent(string eventName, string stringPayload);
+    [DllImport("__Internal")]
+    private static extern void TriggerReactIntEvent(string eventName, int intPayload);
 
     // Start is called before the first frame update
     void Awake()
@@ -215,7 +221,9 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void sendReact(string selectedPiece, int square)
     {
-
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+        TriggerReactIntEvent("WantsToMove", square);
+#endif
     }
 
     /// <summary>
@@ -223,7 +231,9 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void sendReact(string selectedPiece, string usiString)
     {
-
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+        TriggerReactStringEvent("Move", usiString);
+#endif
     }
 
     /// <summary>

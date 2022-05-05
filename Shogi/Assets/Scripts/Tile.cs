@@ -48,9 +48,9 @@ public class Tile : MonoBehaviour
 
     public void OnClick()
     {
-        OnPlayerClicked.Invoke(Coordinates);
         square = ((Coordinates.x * 9) - Coordinates.y - 72) * -1;
         Debug.Log(square);
+        OnPlayerClicked.Invoke(Coordinates);
     }
 
     public void SetShogiPiece(ShogiPiece shogiPiece)
