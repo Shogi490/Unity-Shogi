@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 825ae1d47e445604bae9ee20118e5270, type: 3}
   BSprite: {fileID: 21300000, guid: 8bf0755a519a49f4ea819a6d0bb19557, type: 3}
-  FSprite: {fileID: 0}
-  EFSprite: {fileID: 0}
-  MSprite: {fileID: 21300000, guid: 4274e972e1e30a045b71ba6414484417, type: 3}
-  EMSprite: {fileID: 21300000, guid: dbdbfb511ebf22742a953b7919a31820, type: 3}
+  FSprite: {fileID: 21300000, guid: a7f4b176e1e4aaf45a3f3f15570a3d71, type: 3}
+  EFSprite: {fileID: 21300000, guid: 5e77ee4b29c3a664ab34cd43d313b5ab, type: 3}
+  MSprite: {fileID: 21300000, guid: 0c74163eaf5b6a64ba15e0cb271f3931, type: 3}
+  EMSprite: {fileID: 21300000, guid: cc2a0299991386e4d9c1fae0d04fc7bd, type: 3}
   TileSprite: {fileID: 0}
   Name: Pawn
   Value: 1

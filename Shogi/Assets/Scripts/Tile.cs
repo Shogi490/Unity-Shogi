@@ -154,8 +154,8 @@ public class Tile : MonoBehaviour
     public void ReactColorPick()
     {
         PlayerWhite = false;
-        PlayerFanticy = false;
-        PlayerMilitary = true;
+        PlayerFanticy = true;
+        PlayerMilitary = false;
         PlayerTile = false;
 
         BoardBrownWhite = true;

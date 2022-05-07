@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: d493fa1b07baa50478435a949a730f5c, type: 3}
   BSprite: {fileID: 21300000, guid: fd856f098dd07ff498963e048326e565, type: 3}
-  FSprite: {fileID: 0}
-  EFSprite: {fileID: 0}
-  MSprite: {fileID: 21300000, guid: b59e4a94c4d27d148a074bf0e8a0917d, type: 3}
-  EMSprite: {fileID: 0}
+  FSprite: {fileID: 21300000, guid: bd83e0c77c980ab45a584b8342023fdf, type: 3}
+  EFSprite: {fileID: 21300000, guid: 5a06226f86476e0439faed721b426231, type: 3}
+  MSprite: {fileID: 21300000, guid: d9a6658a722aec6439bf640ca5e598fc, type: 3}
+  EMSprite: {fileID: 21300000, guid: c8ebd19210fe9c547ab618873106ae81, type: 3}
   TileSprite: {fileID: 0}
   Name: Silver General
   Value: 5

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 5f9a55e9e25d3264fadfd64e4c5d94ae, type: 3}
   BSprite: {fileID: 21300000, guid: 72ada9abfb79d5b4f9fd03ac0ff2f69b, type: 3}
-  FSprite: {fileID: 0}
-  EFSprite: {fileID: 0}
-  MSprite: {fileID: 21300000, guid: 2c95a83df8f43214cbb93501c40d7fa6, type: 3}
-  EMSprite: {fileID: 0}
+  FSprite: {fileID: 21300000, guid: f3a5657a18c52504bb192f5de8c065a7, type: 3}
+  EFSprite: {fileID: 21300000, guid: 625fa00ccb816c24c8cc69c99a741e34, type: 3}
+  MSprite: {fileID: 21300000, guid: 3d8f987488e1d6949ba2f8220f63fed1, type: 3}
+  EMSprite: {fileID: 21300000, guid: 5dee1a049b7e018459faf76c168c752a, type: 3}
   TileSprite: {fileID: 0}
   Name: King
   Value: 1000

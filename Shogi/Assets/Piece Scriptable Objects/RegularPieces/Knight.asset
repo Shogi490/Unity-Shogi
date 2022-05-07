@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: a3956b77c84c56249a15fe447581566a, type: 3}
   BSprite: {fileID: 21300000, guid: 883a4447bc8829b40bae0196bea0a399, type: 3}
-  FSprite: {fileID: 0}
-  EFSprite: {fileID: 0}
-  MSprite: {fileID: 21300000, guid: 48814ea529bee7949b4fd8220177a1a4, type: 3}
-  EMSprite: {fileID: 0}
+  FSprite: {fileID: 21300000, guid: 686c672aa39bf254fb4e34f1a98c0060, type: 3}
+  EFSprite: {fileID: 21300000, guid: 91fc363b0ffbdca4fb06a7c7e9a50d79, type: 3}
+  MSprite: {fileID: 21300000, guid: 227c5aadb77a6254bb6455ff528a6d59, type: 3}
+  EMSprite: {fileID: 21300000, guid: 6fd8dff4fb7ad004a944343d6b35052a, type: 3}
   TileSprite: {fileID: 0}
   Name: Kight
   Value: 3

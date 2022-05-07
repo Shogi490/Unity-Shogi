@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 126004c3f7441ec4e9036a4f202ae298, type: 3}
   BSprite: {fileID: 21300000, guid: dea4ec13a86e45844bf7e892b001e017, type: 3}
-  FSprite: {fileID: 0}
-  EFSprite: {fileID: 0}
-  MSprite: {fileID: 21300000, guid: 3b3dee30cafb0544c9088e0a72c4d1e0, type: 3}
-  EMSprite: {fileID: 21300000, guid: e88e4eca41ed2e84c858a6ccf0b8623f, type: 3}
+  FSprite: {fileID: 21300000, guid: 3c37d1c50d5887c41a7b2ca9aaa9423a, type: 3}
+  EFSprite: {fileID: 21300000, guid: 75ffaee5f2f7ba94fa309d43d0f5acd8, type: 3}
+  MSprite: {fileID: 21300000, guid: 48dd173b0cd05ac4ba819d6016b1c57e, type: 3}
+  EMSprite: {fileID: 21300000, guid: f3cc027dcd7fdd04d9f34885f6cb94a6, type: 3}
   TileSprite: {fileID: 0}
   Name: Lance
   Value: 3
