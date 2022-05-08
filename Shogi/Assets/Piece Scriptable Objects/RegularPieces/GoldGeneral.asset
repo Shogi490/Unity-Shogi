@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: c0907d03640bcc3448c7022f101e5998, type: 3}
   BSprite: {fileID: 21300000, guid: b3b3c27e99604cc4286d7c4ba1c8dcf6, type: 3}
-  FSprite: {fileID: 21300000, guid: db9be944bb620fd408031b0992182c5d, type: 3}
-  EFSprite: {fileID: 21300000, guid: 8c6079572254b2e4baf4e1f03f11f66a, type: 3}
+  FSprite: {fileID: 21300000, guid: 9960bdc711d7d5946a8129b7a7dda754, type: 3}
+  EFSprite: {fileID: 21300000, guid: f97215b3cdb9c524eb9f7a1dc1da172f, type: 3}
   MSprite: {fileID: 21300000, guid: 43e91ef94c98562438997f898f33ec85, type: 3}
   EMSprite: {fileID: 21300000, guid: 36b3fb0261bc7e84abedf59e5d5c7745, type: 3}
   TileSprite: {fileID: 0}

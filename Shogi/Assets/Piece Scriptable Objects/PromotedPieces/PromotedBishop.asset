@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: dc632166ef0b21842af594121a0a57de, type: 3}
   BSprite: {fileID: 21300000, guid: f8a170016c0f1334a8bb7e6c42e5b23b, type: 3}
+  FSprite: {fileID: 21300000, guid: 923e7cfd27dcf3c43ab47893697d81a4, type: 3}
+  EFSprite: {fileID: 21300000, guid: cd2da5ef0189ce74c80e00a862684aff, type: 3}
+  MSprite: {fileID: 21300000, guid: 68cf52f446fedeb4e87eddada5bb7fb7, type: 3}
+  EMSprite: {fileID: 21300000, guid: bbfedb15aec71144c8b9d4bea3fc063e, type: 3}
+  TileSprite: {fileID: 0}
   Name: Promoted Bishop
   Value: 12
   movementOptions: 0000000005000000
