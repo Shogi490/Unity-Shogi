@@ -18,7 +18,8 @@ MonoBehaviour:
   EFSprite: {fileID: 21300000, guid: 58bea6442de55f449b2a2442b3531944, type: 3}
   MSprite: {fileID: 21300000, guid: 275ff9e6c05e0f544957e16cd20d95d5, type: 3}
   EMSprite: {fileID: 21300000, guid: 4bf14dfd24678c34688d207a821a6600, type: 3}
-  TileSprite: {fileID: 0}
+  TileSprite: {fileID: 21300000, guid: 4941cfb5b488d284ca5c9e911dbf0c86, type: 3}
+  ETileSprite: {fileID: 21300000, guid: f4190e001e9f28a4a82463c210c665d5, type: 3}
   Name: Promoted Knight
   Value: 5
   movementOptions: 01000000

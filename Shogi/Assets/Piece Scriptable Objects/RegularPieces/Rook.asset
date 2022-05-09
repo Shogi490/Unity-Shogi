@@ -18,7 +18,8 @@ MonoBehaviour:
   EFSprite: {fileID: 21300000, guid: 6ec5b94d726418c499860c50fc1e60a4, type: 3}
   MSprite: {fileID: 21300000, guid: 3104435540ff0694eab04947ba1348e4, type: 3}
   EMSprite: {fileID: 21300000, guid: 7e15fcffeedab4e44bc318a79e7bf7d9, type: 3}
-  TileSprite: {fileID: 0}
+  TileSprite: {fileID: 21300000, guid: 7cc950fe024d7474eb09c1c3a561a096, type: 3}
+  ETileSprite: {fileID: 21300000, guid: 39adf9f41389a944ab7509a254c2ac21, type: 3}
   Name: Rook
   Value: 3
   movementOptions: 06000000

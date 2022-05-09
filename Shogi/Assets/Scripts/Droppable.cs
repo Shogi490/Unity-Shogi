@@ -18,15 +18,21 @@ public class Droppable : MonoBehaviour
 
     private DropController _dropController;
     private GameController _gameController;
-    private int _dropAmount = 0; 
+    private int _dropAmount = 0;
+    public string x;
 
     // Start is called before the first frame update
     void Start()
     {
+        //GetSkin("fantasy");
         _dropController = DropController.Instance;
         _gameController = GameController.Instance;
         _button.interactable = (_gameController.IsPlayerTurn == _isPlayer && _dropAmount > 0) ? true : false;
-        _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite;
+        
+        if (x == "fantasy") {_dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.FSprite : DroppablePiece.EFSprite;}
+        else if (x == "navy") { _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.MSprite : DroppablePiece.EMSprite; }
+        else if (x == "shogi") { _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.TileSprite : DroppablePiece.ETileSprite; }
+        else { _dropImage.sprite = (_isPlayer == _gameController.PlayerIsWhite) ? DroppablePiece.WSprite : DroppablePiece.BSprite; }
         InitDropAmount(_dropAmount);
         _gameController.OnNewTurn.Add(_enableButtonOnTurn);
     }
@@ -35,6 +41,11 @@ public class Droppable : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void GetSkin(string i)
+    {
+        x = i;
     }
 
     public void ChangeAmountBy(int amount)
@@ -67,4 +78,5 @@ public class Droppable : MonoBehaviour
             _button.interactable = false;
         }
     }
+
 }

@@ -26,16 +26,9 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private Image _yesPromotionImage = null;
 
-   
-    public bool PlayerWhite;
-    public bool PlayerBlack;
-    public bool PlayerFanticy;
-    public bool PlayerMilitary;
-    public bool PlayerTile;
+    public string x;
 
-    public bool BoardBrownWhite;
-    public bool BoardBlackWhite;
-    public bool BoardBrownGreen;
+  
 
     // stores where the tile is within the playgrid
     public int2 Coordinates;
@@ -49,6 +42,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        //GetSkin("shogi");
         RefreshDisplay();
     }
 
@@ -87,51 +81,79 @@ public class Tile : MonoBehaviour
         this.IsHighlighted = false;
     }
 
+    public void GetSkin(string i)
+    {
+        x = i;
+    }
+
     public void RefreshDisplay()
     {
         // Add Text
         Text.text = _shogiPiece.Name.ToString();
         // Allocate correctly colored sprite
-        //react sets color true or false
-        ReactColorPick();
-
         if (GameController.Instance.PlayerIsWhite == IsPlayerOwned)
         {
-            if (PlayerWhite == true)
-            { 
-                Image.sprite = _shogiPiece.WSprite;
-                //_noPromotionImage.sprite = _shogiPiece.WSprite;
-                //_yesPromotionImage.sprite = _shogiPiece.WSprite;
+            if (x == "shogi")
+            {
+                Image.sprite = _shogiPiece.TileSprite;
+                _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.TileSprite : _shogiPiece.ETileSprite;
+                _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.TileSprite : _shogiPiece.PromotedPiece.ETileSprite;
             }
 
-            if (PlayerBlack == true)
-            { Image.sprite = _shogiPiece.BSprite; }
+            else if (x == "fantasy")
+            { 
+                Image.sprite = _shogiPiece.FSprite;
+                _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.FSprite : _shogiPiece.EFSprite;
+                _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.FSprite : _shogiPiece.PromotedPiece.EFSprite;
+            }
 
-            if (PlayerFanticy == true)
-            { Image.sprite = _shogiPiece.FSprite; }
+            else if (x == "navy")
+            { 
+                Image.sprite = _shogiPiece.MSprite;
+                _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.MSprite : _shogiPiece.EMSprite;
+                _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.MSprite : _shogiPiece.PromotedPiece.EMSprite;
+            }
 
-            if (PlayerMilitary == true)
-            { Image.sprite = _shogiPiece.MSprite; }
-
-            if (PlayerTile == true)
-            { Image.sprite = _shogiPiece.EMSprite; }
+            else //(x == "chess")
+            {
+                 Image.sprite = _shogiPiece.WSprite;
+                 _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
+                 _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite;
+            }
+               
         }
         else
         {
-            if (PlayerWhite == true)
-            { Image.sprite = _shogiPiece.BSprite; }
+            if (x == "shogi")
+            {
+                Image.sprite = _shogiPiece.ETileSprite;
+                _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.TileSprite : _shogiPiece.ETileSprite;
+                _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.TileSprite : _shogiPiece.PromotedPiece.ETileSprite;
+            }
 
-            if (PlayerBlack == true)
-            { Image.sprite = _shogiPiece.WSprite; }
 
-            if (PlayerFanticy == true)
-            { Image.sprite = _shogiPiece.EFSprite; }
+            else if (x == "fantasy")
+            {   
+                Image.sprite = _shogiPiece.EFSprite;
+                _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.FSprite : _shogiPiece.EFSprite;
+                _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.FSprite : _shogiPiece.PromotedPiece.EFSprite;
+            }
 
-            if (PlayerMilitary == true)
-            { Image.sprite = _shogiPiece.EMSprite; }
+            else if (x == "navy")
+            {   
+                Image.sprite = _shogiPiece.EMSprite; 
+                _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.MSprite : _shogiPiece.EMSprite;
+                _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.MSprite : _shogiPiece.PromotedPiece.EMSprite;
+            }
 
-            if (PlayerTile == true)
-            { Image.sprite = _shogiPiece.EMSprite; }
+            else //(x == "chess")
+            {
+                Image.sprite = _shogiPiece.BSprite;
+                _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
+                _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite;
+            }
+                
+
         }
 
 
@@ -144,25 +166,9 @@ public class Tile : MonoBehaviour
             Image.color = Color.white;
         }
         // Update the Promotion Prompt
-        if (_shogiPiece.Promotable)
-        {
-            _noPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.WSprite : _shogiPiece.BSprite;
-            _yesPromotionImage.sprite = (GameController.Instance.PlayerIsWhite == IsPlayerOwned) ? _shogiPiece.PromotedPiece.WSprite : _shogiPiece.PromotedPiece.BSprite;
-        }
+        
     }
 
-    public void ReactColorPick()
-    {
-        PlayerWhite = false;
-        PlayerFanticy = true;
-        PlayerMilitary = false;
-        PlayerTile = false;
-
-        BoardBrownWhite = true;
-        BoardBlackWhite = false;
-        BoardBrownGreen = false;
-        //BoardBlueWhite = false;
-    }
     public void PromptForPromotion()
     {
         if (_shogiPiece.Promotable && IsPlayerOwned == GameController.Instance.IsPlayerTurn)

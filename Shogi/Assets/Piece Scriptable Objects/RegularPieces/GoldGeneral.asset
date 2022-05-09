@@ -18,7 +18,8 @@ MonoBehaviour:
   EFSprite: {fileID: 21300000, guid: f97215b3cdb9c524eb9f7a1dc1da172f, type: 3}
   MSprite: {fileID: 21300000, guid: 43e91ef94c98562438997f898f33ec85, type: 3}
   EMSprite: {fileID: 21300000, guid: 36b3fb0261bc7e84abedf59e5d5c7745, type: 3}
-  TileSprite: {fileID: 0}
+  TileSprite: {fileID: 21300000, guid: 9041f1ef474cb0546812625ab53ddd35, type: 3}
+  ETileSprite: {fileID: 21300000, guid: c7b52a3f6d3c33340a420f4c325b70ae, type: 3}
   Name: Gold General
   Value: 5
   movementOptions: 01000000
