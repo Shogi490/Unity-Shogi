@@ -28,6 +28,28 @@ public class GameController : MonoBehaviour
     private ShogiPiece empty = null;
     [SerializeField]
     private string usi = "";
+
+    //Piece variables
+    [SerializeField]
+    private ShogiPiece Bishop = null;
+    [SerializeField]
+    private ShogiPiece Rook = null;
+    [SerializeField]
+    private ShogiPiece Pawn = null;
+    [SerializeField]
+    private ShogiPiece King = null;
+    [SerializeField]
+    private ShogiPiece goldGeneral = null;
+    [SerializeField]
+    private ShogiPiece silverGeneral = null;
+    [SerializeField]
+    private ShogiPiece Knight = null;
+    [SerializeField]
+    private ShogiPiece Lance = null;
+
+
+
+
     //public UnityEvent manualRestart;
 
     //private Tile selected; 
@@ -279,52 +301,52 @@ public class GameController : MonoBehaviour
         switch (letter)
         {
             case "l" :
-
+                temp = Lance;
                 break;
             case "n":
-
+                temp = Knight;
                 break;
             case "s":
-
+                temp = silverGeneral;
                 break;
             case "g":
-
+                temp = goldGeneral;
                 break;
             case "k":
-
+                temp = King;
                 break;
             case "r":
-
+                temp = Rook;
                 break;
             case "b":
-
+                temp = Bishop;
                 break;
             case "p":
-
+                temp = Pawn;
                 break;
             case "L":
-
+                temp = Lance;
                 break;
             case "N":
-
+                temp = Knight;
                 break;
             case "S":
-
+                temp = silverGeneral;
                 break;
             case "G":
-
+                temp = goldGeneral;
                 break;
             case "K":
-
+                temp = King;
                 break;
             case "R":
-
+                temp = Rook;
                 break;
             case "B":
-
+                temp = Bishop;
                 break;
             case "P":
-
+                temp = Pawn;
                 break;
             default :
                 temp = empty;
