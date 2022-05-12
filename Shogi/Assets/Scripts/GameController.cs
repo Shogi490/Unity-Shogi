@@ -103,6 +103,7 @@ public class GameController : MonoBehaviour
         Tile tile = tiles[coord.x, coord.y];
         tile.OnPlayerClicked = _onTileSelected;
         tile.Unhighlight();
+        usi = "";
     }
 
     public void ForAllTiles(System.Action<Tile> callback)
@@ -211,9 +212,127 @@ public class GameController : MonoBehaviour
 
             usi += (Convert.ToChar(letter)).ToString() + (selectedTile.Coordinates.y + 1);
 
-            sendReact("Move", usi);
+            sendReact("Move", usi); 
+        }
+        
+
+    }
+
+    public void boardFromSfen(string sfen)
+    {
+        string[] gameState = sfen.Split(' ');
+
+        if ((gameState[1].Equals('w') && PlayerIsWhite) || (gameState[1].Equals('b') && !PlayerIsWhite))
+            IsPlayerTurn = true;
+        else
+            IsPlayerTurn = false;
+
+        string[] pieceState = gameState[0].Split('/');
+
+        for (int i = 0; i < pieceState.Length; i++)
+        {
+            string[] line = System.Text.RegularExpressions.Regex.Split(pieceState[i], "([0-9]?\\+?[a-zA-Z]?)");
+            int count = 0;
+            for (int j = 0; j < line.Length; j++)
+            {
+                string[] move = System.Text.RegularExpressions.Regex.Split(line[j], "(.)");
+
+                
+                if (move.Length == 1 && move[0].GetType() == typeof(int))
+                {
+                    for(int clear = 0; clear < 9; clear++)
+                    {
+                        tiles[i, clear].SetShogiPiece(empty);
+                    }
+                    break;
+                }
+                else if (move[0].Equals("+") || Convert.ToInt32(move[0]) > 64)
+                {
+                    tiles[i, count].SetShogiPiece(getPiece(move[1]));
+                }
+                else
+                {
+                    for(int z = 0; z < Int32.Parse(move[0]); z++)
+                    {
+                        count++;
+                        tiles[i, count].SetShogiPiece(empty);
+                    }
+
+                    count++;
+                    tiles[i, count].SetShogiPiece(getPiece(move[move.Length - 1]));
+
+                    //if(move[1].Equals("+")
+                }
+
+            }
+
+            count = 0;
+
         }
 
+    }
+
+    private ShogiPiece getPiece(string letter)
+    {
+        ShogiPiece temp = null;
+
+        switch (letter)
+        {
+            case "l" :
+
+                break;
+            case "n":
+
+                break;
+            case "s":
+
+                break;
+            case "g":
+
+                break;
+            case "k":
+
+                break;
+            case "r":
+
+                break;
+            case "b":
+
+                break;
+            case "p":
+
+                break;
+            case "L":
+
+                break;
+            case "N":
+
+                break;
+            case "S":
+
+                break;
+            case "G":
+
+                break;
+            case "K":
+
+                break;
+            case "R":
+
+                break;
+            case "B":
+
+                break;
+            case "P":
+
+                break;
+            default :
+                temp = empty;
+                break;
+
+        }
+
+        return temp;
     }
     
     /// <summary>
@@ -234,6 +353,34 @@ public class GameController : MonoBehaviour
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
         TriggerReactStringEvent("Move", usiString);
 #endif
+    }
+
+
+
+    /// <summary>
+    /// Highlights tiles listed in an array sent from react
+    /// </summary>
+    private void HighlightMoves(int[] squaresToHighlight)
+    {
+        for (int i = 0; i < squaresToHighlight.Length; i++)
+        {
+            int col = squaresToHighlight[i] % 9;
+            int row = (squaresToHighlight[i] - col) / 9;
+            tiles[row, col].Highlight();
+        }
+    }
+
+    /// <summary>
+    /// Highlights tiles listed in an array sent from react
+    /// </summary>
+    private void HighlightDrops(int[] squaresToHighlight)
+    {
+        for (int i = 0; i < squaresToHighlight.Length; i++)
+        {
+            int col = squaresToHighlight[i] % 9;
+            int row = (squaresToHighlight[i] - col) / 9;
+            tiles[row, col].Highlight();
+        }
     }
 
     /// <summary>
