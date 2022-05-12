@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 05aad1a4f5bd0d947b837127f74b1303, type: 3}
   BSprite: {fileID: 21300000, guid: 8d96b39c384dcb041842338face425d4, type: 3}
+  FSprite: {fileID: 21300000, guid: aed41796e7573c94bbf6fd0dae68ed20, type: 3}
+  EFSprite: {fileID: 21300000, guid: d14c0cbc6a761b940a40f477c2749e19, type: 3}
+  MSprite: {fileID: 21300000, guid: ed0e42081961b29458e82431d1163bca, type: 3}
+  EMSprite: {fileID: 21300000, guid: cdbd1928e93ceb049b45670a92a8e956, type: 3}
+  TileSprite: {fileID: 21300000, guid: ccae89680c39f9d44851246526c807cf, type: 3}
+  ETileSprite: {fileID: 21300000, guid: e9dfe8d8df952db42a798d01f0651d6d, type: 3}
   Name: Bishop
   Value: 8
   movementOptions: 05000000

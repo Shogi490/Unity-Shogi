@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 70aef80f35e8f1b41a0c0b9e2d3a80c2, type: 3}
   BSprite: {fileID: 21300000, guid: 895acce535011dc44a0a6f54b7940462, type: 3}
+  FSprite: {fileID: 21300000, guid: f74e1b0bfb6f64642b0407c9d2cdbd7f, type: 3}
+  EFSprite: {fileID: 21300000, guid: 01752b40e3586964e80fe1aed33fd994, type: 3}
+  MSprite: {fileID: 21300000, guid: ee898239076252c49acdf1cd3fdcd85f, type: 3}
+  EMSprite: {fileID: 21300000, guid: 5cb6b64e4ad8ac142a60ac53b62783b3, type: 3}
+  TileSprite: {fileID: 21300000, guid: 1931586e037f2c641a43474748fc65cb, type: 3}
+  ETileSprite: {fileID: 21300000, guid: 877f9fff9a79e034d84527a347b80278, type: 3}
   Name: Promoted Rook
   Value: 13
   movementOptions: 0000000006000000

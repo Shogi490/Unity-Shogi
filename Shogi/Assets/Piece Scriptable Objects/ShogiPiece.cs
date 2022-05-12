@@ -8,6 +8,12 @@ public class ShogiPiece : ScriptableObject
 {
     public Sprite WSprite;
     public Sprite BSprite;
+    public Sprite FSprite;
+    public Sprite EFSprite;
+    public Sprite MSprite;
+    public Sprite EMSprite;
+    public Sprite TileSprite;
+    public Sprite ETileSprite;
     public string Name;
     public int Value;
     public MovementOption[] movementOptions;

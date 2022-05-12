@@ -8,10 +8,12 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
     public bool PlayerIsWhite = true;
     public bool IsPlayerTurn = true;
+    public bool active_game = true;
     public Tile[,] tiles { get; private set; }
     public Tile TilePrefab;
     public List<System.Action<bool>> OnNewTurn = new List<System.Action<bool>>();
     private Timer timer;
+    private Endgame endgame;
 
 
     [SerializeField]
@@ -86,7 +88,13 @@ public class GameController : MonoBehaviour
         {
             listener(IsPlayerTurn);
         }
-        timer.updateTime(60);
+        //timer.updateTime(60);
+    }
+
+    public void gameover(int x)
+    {
+        active_game = false;
+        //endgame.display();
     }
 
     public void ResetTileOnPlayerClicked(int2 coord)
@@ -239,16 +247,20 @@ public class GameController : MonoBehaviour
     /// <param name="callback"></param>
     private void _forMovableTilesFrom(Tile targetTile, System.Action<Tile> callback)
     {
-        // get the tiles for which the piece can move to.
-        // duplicates are OK, because they will just be re-highlighted.
-        List<Tile> moveableTiles = _getMovableTilesFrom(targetTile);
-
-        // for each of those tiles, callback(movableTile);
-        foreach(Tile tile in moveableTiles)
+        if (active_game == true)
         {
-            if(tile != null) callback(tile);
+            // get the tiles for which the piece can move to.
+            // duplicates are OK, because they will just be re-highlighted.
+            List<Tile> moveableTiles = _getMovableTilesFrom(targetTile);
+
+            // for each of those tiles, callback(movableTile);
+            foreach (Tile tile in moveableTiles)
+            {
+                if (tile != null) callback(tile);
+            }
         }
     }
+
 
     private List<Tile> _getMovableTilesFrom(Tile targetTile)
     {

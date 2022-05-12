@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 8126b067a528a7c4186aff65e45c0e92, type: 3}
   BSprite: {fileID: 21300000, guid: 158f46fdaf312b0409ebe63c754c1299, type: 3}
+  FSprite: {fileID: 21300000, guid: 824bee3a3e899eb468beda38e7451ef2, type: 3}
+  EFSprite: {fileID: 21300000, guid: 58bea6442de55f449b2a2442b3531944, type: 3}
+  MSprite: {fileID: 21300000, guid: 275ff9e6c05e0f544957e16cd20d95d5, type: 3}
+  EMSprite: {fileID: 21300000, guid: 4bf14dfd24678c34688d207a821a6600, type: 3}
+  TileSprite: {fileID: 21300000, guid: a9c004d9ef5e9ff44a898e19913b02fa, type: 3}
+  ETileSprite: {fileID: 21300000, guid: 7050e46a49be1c74188c7f58ad65d9cf, type: 3}
   Name: Promoted Lance
   Value: 5
   movementOptions: 01000000

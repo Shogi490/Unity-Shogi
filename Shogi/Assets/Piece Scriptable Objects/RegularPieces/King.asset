@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: 5f9a55e9e25d3264fadfd64e4c5d94ae, type: 3}
   BSprite: {fileID: 21300000, guid: 72ada9abfb79d5b4f9fd03ac0ff2f69b, type: 3}
+  FSprite: {fileID: 21300000, guid: dfc81b4c3db9ec846a272abf9fa6d5bc, type: 3}
+  EFSprite: {fileID: 21300000, guid: a794d3c740aeef04594af06c80872ebf, type: 3}
+  MSprite: {fileID: 21300000, guid: 3d8f987488e1d6949ba2f8220f63fed1, type: 3}
+  EMSprite: {fileID: 21300000, guid: 5dee1a049b7e018459faf76c168c752a, type: 3}
+  TileSprite: {fileID: 21300000, guid: 0e6c7c1b68fe99a4da397df0b1e1aaa2, type: 3}
+  ETileSprite: {fileID: 21300000, guid: 5ed9b8f908605b14c94cf960ee3e4ca9, type: 3}
   Name: King
   Value: 1000
   movementOptions: 00000000
+  Promotable: 0
   PromotedPiece: {fileID: 11400000}
