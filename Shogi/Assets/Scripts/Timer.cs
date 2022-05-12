@@ -27,7 +27,7 @@ public class Timer : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 _gameController = GameController.Instance;
-                _gameController.gameover(1);
+                //_gameController.gameover(1);
             }
         }
     }

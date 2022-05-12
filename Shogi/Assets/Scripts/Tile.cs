@@ -42,7 +42,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        //GetSkin("shogi");
+        //SetSkin("shogi");
         RefreshDisplay();
     }
 

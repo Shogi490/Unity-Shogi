@@ -24,7 +24,7 @@ public class Droppable : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //SetSkin("fantasy");
+        //SetSkin("shogi");
         _dropController = DropController.Instance;
         _gameController = GameController.Instance;
         _button.interactable = (_gameController.IsPlayerTurn == _isPlayer && _dropAmount > 0) ? true : false;

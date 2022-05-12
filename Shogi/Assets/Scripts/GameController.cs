@@ -88,7 +88,7 @@ public class GameController : MonoBehaviour
         {
             listener(IsPlayerTurn);
         }
-        timer.updateTime(60);
+        //timer.updateTime(60);
     }
 
     public void gameover(int x)
