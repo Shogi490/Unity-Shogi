@@ -12,18 +12,16 @@ public class GameController : MonoBehaviour
     public bool IsPlayerTurn = true;
     public Tile[,] tiles { get; private set; }
     public Tile TilePrefab;
+    private ShogiPiece _selectedPiece = null;
     public List<System.Action<bool>> OnNewTurn = new List<System.Action<bool>>();
-    private Timer timer;
+    public DropController _dropController;
 
+    public string initSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
 
     [SerializeField]
     private int rows = 0;
     [SerializeField]
     private int columns = 0;
-    [SerializeField]
-    private ShogiPiece[] PlayerPieces = null;
-    [SerializeField]
-    private ShogiPiece[] EnemyPieces = null;
     [SerializeField]
     private ShogiPiece empty = null;
     [SerializeField]
@@ -47,14 +45,6 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ShogiPiece Lance = null;
 
-
-
-
-    //public UnityEvent manualRestart;
-
-    //private Tile selected; 
-    private int2 selectedCoord = new int2(-1,-1);
-
     [DllImport("__Internal")]
     private static extern void TriggerReactStringEvent(string eventName, string stringPayload);
     [DllImport("__Internal")]
@@ -63,6 +53,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        // enforce singleton
         if (Instance == null)
         {
             Instance = this;
@@ -70,7 +61,13 @@ public class GameController : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
+    }
+
+    private void Start()
+    {
+        _selectedPiece = empty;
 
 
         // The below populates the tiles array.
@@ -82,48 +79,24 @@ public class GameController : MonoBehaviour
             {
                 Tile newTile = Instantiate(TilePrefab, transform);
                 newTile.Coordinates = new int2(i, j);
-                newTile.OnPlayerClicked = _onTileSelected;
+                newTile.OnPlayerClicked = _onTileClicked;
                 tiles[i, j] = newTile;
             }
         }
 
-        // set the player's initial pieces
-        for(int i = 0; i < PlayerPieces.Length; i++)
-        {
-            int row = rows - (1 + (i / columns));
-            int column = columns - (1 + (i % columns));
-            tiles[row, column].SetShogiPiece(PlayerPieces[i]);
-            tiles[row, column].IsPlayerOwned = (tiles[row, column].ShogiPiece == empty) ? false : true; // if the given piece is empty, don't assign to Player
-            tiles[row, column].RefreshDisplay();
-        }
-
-        // set the enemy's initial pieces
-        for (int i = 0; i < EnemyPieces.Length; i++)
-        {
-            int row = i / columns;
-            int column = i % columns;
-            tiles[row, column].SetShogiPiece(EnemyPieces[i]);
-            tiles[row, column].RefreshDisplay();
-            ///tiles[row, column].isEnemyOwned = (tiles[row, column].ShogiPiece == empty) ? false : true;
-        }
-
-        OnNewTurn.Add(_resetBoardClickActions);
-        timer = GameObject.FindObjectOfType<Timer>();
+        boardFromSfen(initSfen);
+        //_dropController = GetComponent<DropController>();
     }
-    public void SwitchSides()
+
+    public void SetPlayerIsWhite(bool result)
     {
-        IsPlayerTurn = !IsPlayerTurn;
-        foreach(System.Action<bool> listener in OnNewTurn)
-        {
-            listener(IsPlayerTurn);
-        }
-        timer.updateTime(60);
+        this.PlayerIsWhite = result;
     }
 
     public void ResetTileOnPlayerClicked(int2 coord)
     {
         Tile tile = tiles[coord.x, coord.y];
-        tile.OnPlayerClicked = _onTileSelected;
+        tile.OnPlayerClicked = _onTileClicked;
         tile.Unhighlight();
         usi = "";
     }
@@ -143,39 +116,34 @@ public class GameController : MonoBehaviour
     /// An Event Listener for when the User Clicks on an unhighlighted Tile.
     /// </summary>
     /// <param name="newCoord"></param>
-    private void _onTileSelected(int2 newCoord)
+    private void _onTileClicked(int2 newCoord)
     {
-        Tile newTile = _getTileFromCoord(newCoord);
-        if (newTile != null)
+        Tile theTile = _getTileFromCoord(newCoord);
+
+        if (IsPlayerTurn && theTile != null)
         {
-            Debug.Log(newCoord);
-            if (selectedCoord.x == newCoord.x && selectedCoord.y == newCoord.y)
+            if (theTile.IsPlayerOwned)
             {
-                _unselectTile(); // (Case 1): Re-selected the same tile: Only Unselect
+                // it's the player's turn and the tile is owned by the player...
+                theTile.OnPlayerClicked = (int2 coord) =>
+                {
+                    // Writes the source half the USI using unicode values & coordinate data
+                    int letter = 97;
+                    letter += theTile.Coordinates.x;
+                    usi = (Convert.ToChar(letter)).ToString() + (theTile.Coordinates.y + 1);
+
+                    _resetBoardClickActions();
+                    _selectedPiece = theTile.ShogiPiece;
+                    sendReact("WantsToMove", theTile.square);
+                };
             } else
             {
-                _unselectTile(); // (Case 2): Selected and newlySelected are different: Unselect and ...
-                _selectTile(newTile); // (Case 3): No Current Selection: Select newlySelected!
+                // player clicked on a tile that they didn't own
             }
-        }
-    }
-
-    /// <summary>
-    /// If selected coord has a ShogiPiece, unhighlight all movable tiles. Then unselect the coord.
-    /// </summary>
-    private void _unselectTile()
-    {
-        Tile selectedTile = _getTileFromCoord(selectedCoord);
-        if(selectedTile != null)
+        } else
         {
-            // there is a selected Tile
-            _forMovableTilesFrom(selectedTile, (Tile oldMovable) =>
-            {
-                oldMovable.Unhighlight();
-                oldMovable.OnPlayerClicked = _onTileSelected;
-            });
+            // it's not the player's turn.
         }
-        selectedCoord = new int2(-1, -1);
     }
 
     /// <summary>
@@ -186,35 +154,6 @@ public class GameController : MonoBehaviour
     {
         if (_coordInBounds(selectedTile.Coordinates) && selectedTile.IsPlayerOwned == IsPlayerTurn && selectedTile.IsHighlighted == false)
         {
-
-            //Old Highlight/tile select code
-
-            /*
-            // highlight movable Tiles
-            _forMovableTilesFrom(selectedTile, (Tile newMovable) =>
-            {
-                newMovable.Highlight();
-                newMovable.OnPlayerClicked = (int2 highlightedCoord) =>
-                {
-                    _unselectTile(); // should unhighlight everything that was previously highlighted.
-                    if (_movePiece(selectedTile.Coordinates, highlightedCoord))
-                    {
-                        // check if should promote
-                        Tile promotionCandidate = tiles[highlightedCoord.x, highlightedCoord.y];
-                        if (_tileCanPromote(promotionCandidate))
-                        {
-                            // prompt for promotion
-                            promotionCandidate.PromptForPromotion();
-                        } else
-                        {
-                            SwitchSides();
-                        }
-                    }
-                };
-            });
-            selectedCoord = selectedTile.Coordinates; 
-            */
-
             sendReact("WantsToMove", selectedTile.square);
             
             //creates half the USI using unicode values & coordinate data
@@ -242,56 +181,181 @@ public class GameController : MonoBehaviour
 
     public void boardFromSfen(string sfen)
     {
+        Debug.Log("triggered boardFromSfen");
+        Debug.Log(sfen);
         string[] gameState = sfen.Split(' ');
-
+        Debug.Log(gameState);
+        // set isPlayerTurn
         if ((gameState[1].Equals('w') && PlayerIsWhite) || (gameState[1].Equals('b') && !PlayerIsWhite))
             IsPlayerTurn = true;
         else
             IsPlayerTurn = false;
 
-        string[] pieceState = gameState[0].Split('/');
+        // set Board
+        string[] rowArr = gameState[0].Split('/');
 
-        for (int i = 0; i < pieceState.Length; i++)
+        for(int rowNum = 0; rowNum < rowArr.Length; rowNum++)
         {
-            string[] line = System.Text.RegularExpressions.Regex.Split(pieceState[i], "([0-9]?\\+?[a-zA-Z]?)");
-            int count = 0;
-            for (int j = 0; j < line.Length; j++)
+            string row = rowArr[rowNum];
+            int column = 0;
+            for ( int i = 0; i < row.Length; i++)
             {
-                string[] move = System.Text.RegularExpressions.Regex.Split(line[j], "(.)");
+                char pieceOrNumber = row[i];
+                if (Char.IsDigit(pieceOrNumber))
+                {
+                    // is digit (empty for the next number of spots
+                    for (int j = 0; j < pieceOrNumber - '0'; j++)
+                    {
+                        tiles[rowNum, column].SetShogiPiece(empty);
+                        column++;
+                    }
+                    continue;
+                }
+                else if (pieceOrNumber == '+')
+                {
+                    // the next piece is promoted!
+                    i++;
+                    ShogiPiece promoted = getPiece(rowArr[i]);
+                    promoted = promoted.PromotedPiece;
+                    tiles[rowNum, column].IsPlayerOwned = SfenLetterIsPlayerOwned(rowArr[i]);
+                    tiles[rowNum, column].SetShogiPiece(promoted);
+                } else
+                {
+                    // the piece is a regular piece
+                    tiles[rowNum, column].IsPlayerOwned = SfenLetterIsPlayerOwned(row[i] + "");
+                    tiles[rowNum, column].SetShogiPiece(getPiece(row[i] + ""));
+                }
+                column++;
+            }
+        }
+
+        //for (int i = 0; i < rowArr.Length; i++)
+        //{
+        //    Debug.Log(rowArr[i]);
+        //    string[] line = System.Text.RegularExpressions.Regex.Split(rowArr[i], "([0-9]?\\+?[a-zA-Z]?)");
+        //    int count = 0;
+        //    for (int j = 0; j < line.Length; j++)
+        //    {
+        //        string[] move = System.Text.RegularExpressions.Regex.Split(line[j], "(.)");
 
                 
-                if (move.Length == 1 && move[0].GetType() == typeof(int))
-                {
-                    for(int clear = 0; clear < 9; clear++)
-                    {
-                        tiles[i, clear].SetShogiPiece(empty);
-                    }
-                    break;
-                }
-                else if (move[0].Equals("+") || Convert.ToInt32(move[0]) > 64)
-                {
-                    tiles[i, count].SetShogiPiece(getPiece(move[1]));
-                }
-                else
-                {
-                    for(int z = 0; z < Int32.Parse(move[0]); z++)
-                    {
-                        count++;
-                        tiles[i, count].SetShogiPiece(empty);
-                    }
+        //        if (move.Length == 1 && move[0].GetType() == typeof(int))
+        //        {
+        //            for(int clear = 0; clear < 9; clear++)
+        //            {
+        //                tiles[i, clear].SetShogiPiece(empty);
+        //            }
+        //            break;
+        //        }
+        //        else if (move[0].Equals("+") || Convert.ToInt32(move[0]) > 64)
+        //        {
+        //            ShogiPiece promoted = getPiece(move[1]);
+        //            promoted = promoted.PromotedPiece;
+        //            tiles[i, count].SetShogiPiece(promoted);
+        //            tiles[i, count].IsPlayerOwned = SfenLetterIsPlayerOwned(move[1]);
+        //        }
+        //        else
+        //        {
+        //            for(int z = 0; z < Int32.Parse(move[0]); z++)
+        //            {
+        //                count++;
+        //                tiles[i, count].SetShogiPiece(empty);
+        //                tiles[i, count].IsPlayerOwned = false;
+        //            }
 
-                    count++;
-                    tiles[i, count].SetShogiPiece(getPiece(move[move.Length - 1]));
+        //            count++;
+        //            tiles[i, count].SetShogiPiece(getPiece(move[move.Length - 1]));
+        //            tiles[i, count].IsPlayerOwned = SfenLetterIsPlayerOwned(move[move.Length - 1]);
+        //        }
 
-                    //if(move[1].Equals("+")
-                }
+        //    }
+        //    count = 0;
+        //}
 
+        // set Hands
+        string dropState = gameState[2];
+        Debug.Log(dropState);
+        // reset hands
+        _dropController.ResetAll();
+        // populate hands
+        if(dropState != "-")
+        {
+            foreach (char sfenPiece in dropState)
+            {
+                ShogiPiece piece = getPiece(sfenPiece + "");
+                bool isPlayerOwned = SfenLetterIsPlayerOwned(sfenPiece + "");
+                _dropController.ManipulatePool(isPlayerOwned, piece, 1);
             }
+        }
 
-            count = 0;
+        // trigger new turn event
+        foreach(System.Action<bool> victim in OnNewTurn)
+        {
+            victim(IsPlayerTurn);
+        }
+    }
+
+    private bool SfenLetterIsPlayerOwned (string letter)
+    {
+        bool isBlack = false;
+
+        switch (letter)
+        {
+            case "l":
+                isBlack = false;
+                break;
+            case "n":
+                isBlack = false;
+                break;
+            case "s":
+                isBlack = false;
+                break;
+            case "g":
+                isBlack = false;
+                break;
+            case "k":
+                isBlack = false;
+                break;
+            case "r":
+                isBlack = false;
+                break;
+            case "b":
+                isBlack = false;
+                break;
+            case "p":
+                isBlack = false;
+                break;
+            case "L":
+                isBlack = true;
+                break;
+            case "N":
+                isBlack = true;
+                break;
+            case "S":
+                isBlack = true;
+                break;
+            case "G":
+                isBlack = true;
+                break;
+            case "K":
+                isBlack = true;
+                break;
+            case "R":
+                isBlack = true;
+                break;
+            case "B":
+                isBlack = true;
+                break;
+            case "P":
+                isBlack = true;
+                break;
+            default:
+                isBlack = true;
+                break;
 
         }
 
+        return PlayerIsWhite && !isBlack;
     }
 
     private ShogiPiece getPiece(string letter)
@@ -360,29 +424,87 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Send react string indicating a piece has been selected to move, as well as square number of piece
     /// </summary>
-    private void sendReact(string selectedPiece, int square)
+    public void sendReact(string eventName, int square)
     {
-#if UNITY_WEBGL == true && UNITY_EDITOR == false
-        TriggerReactIntEvent("WantsToMove", square);
-#endif
+        TriggerReactIntEvent(eventName, square);
     }
 
     /// <summary>
     /// Send react string indicating a piece has been selected to move, as well as a USI string for the move of that piece
     /// </summary>
-    private void sendReact(string selectedPiece, string usiString)
+    public void sendReact(string eventName, string usiString)
     {
-#if UNITY_WEBGL == true && UNITY_EDITOR == false
-        TriggerReactStringEvent("Move", usiString);
-#endif
+        TriggerReactStringEvent(eventName, usiString);
     }
-
-
 
     /// <summary>
     /// Highlights tiles listed in an array sent from react
     /// </summary>
-    private void HighlightMoves(int[] squaresToHighlight)
+    public void HighlightDrop(int squareToHighlight)
+    {
+        int col = squareToHighlight % 9;
+        int row = (squareToHighlight - col) / 9;
+        tiles[row, col].Highlight();
+        tiles[row, col].OnPlayerClicked = (int2 coord) =>
+        {
+            Tile destination = tiles[coord.x, coord.y];
+            destination.IsPlayerOwned = true;
+
+            // "Drops are written with the English piece letter in upper case followed by a star (*) and the destination square (for instance P*3d)."
+            usi = Char.ToUpper(_dropController.WantsToDrop.name[0]) + "*";
+            // appends the destination half the USI using unicode values & coordinate data
+            int letter = 97;
+            letter += destination.Coordinates.x;
+            usi += (Convert.ToChar(letter)).ToString() + (destination.Coordinates.y + 1);
+
+            sendReact("Move", usi);
+            _dropController.WantsToDrop = empty;
+        };
+    }
+
+    /// <summary>
+    /// Highlights tiles listed in an array sent from react
+    /// </summary>
+    public void HighlightMove(int squareToHighlight)
+    {
+        int col = squareToHighlight % 9;
+        int row = (squareToHighlight - col) / 9;
+        tiles[row, col].Highlight();
+        tiles[row, col].OnPlayerClicked = (int2 coord) =>
+        {
+            Tile destination = tiles[coord.x, coord.y];
+            destination.IsPlayerOwned = true;
+
+            // appends the destination half the USI using unicode values & coordinate data
+            int letter = 97;
+            letter += destination.Coordinates.x;
+            usi += (Convert.ToChar(letter)).ToString() + (destination.Coordinates.y + 1);
+
+            if (_tileCanPromote(destination))
+            {
+                // prompt for promotion
+                destination.PromptForPromotion(); // depending on the promotion prompt, we will send the right usi string
+            }
+            else
+            {
+                sendReact("Move", usi);
+            }
+        };
+    }
+
+    public void SendPromotion ( bool willPromote)
+    {
+        if( willPromote == true)
+        {
+            usi += "+";
+        }
+        sendReact("Move", usi);
+    }
+
+    /// <summary>
+    /// Highlights tiles listed in an array sent from react
+    /// </summary>
+    public void HighlightMoves(int[] squaresToHighlight)
     {
         for (int i = 0; i < squaresToHighlight.Length; i++)
         {
@@ -395,7 +517,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Highlights tiles listed in an array sent from react
     /// </summary>
-    private void HighlightDrops(int[] squaresToHighlight)
+    public void HighlightDrops(int[] squaresToHighlight)
     {
         for (int i = 0; i < squaresToHighlight.Length; i++)
         {
@@ -412,14 +534,21 @@ public class GameController : MonoBehaviour
     /// <returns>Whether or not the piece at the Tile can be promoted</returns>
     private bool _tileCanPromote(Tile newlyMoved)
     {
-        if(newlyMoved.IsPlayerOwned)
+        if (_selectedPiece.Promotable)
         {
-            // check the top 3 rows
-            return newlyMoved.Coordinates.x < 3;
+            if (newlyMoved.IsPlayerOwned)
+            {
+                // check the top 3 rows
+                return newlyMoved.Coordinates.x < 3;
+            }
+            else
+            {
+                // check the bottom 3 rows
+                return newlyMoved.Coordinates.x >= rows - 3;
+            }
         } else
         {
-            // check the bottom 3 rows
-            return newlyMoved.Coordinates.x >= rows - 3;
+            return false;
         }
     }
 
@@ -444,7 +573,7 @@ public class GameController : MonoBehaviour
             toTile.IsPlayerOwned = fromTile.IsPlayerOwned;
             if(toTile.ShogiPiece != empty)
             {
-                DropController.Instance.ManipulatePool(IsPlayerTurn, toTile.ShogiPiece, 1);
+                _dropController.ManipulatePool(IsPlayerTurn, toTile.ShogiPiece, 1);
             }
             toTile.SetShogiPiece(fromTile.ShogiPiece);
             fromTile.IsPlayerOwned = false;
@@ -612,12 +741,14 @@ public class GameController : MonoBehaviour
         return coord.x >= 0 && coord.x < columns && coord.y >= 0 && coord.y < rows;
     }
 
-    private void _resetBoardClickActions(bool playerTurn)
+    private void _resetBoardClickActions()
     {
         ForAllTiles((Tile tile) =>
         {
             tile.Unhighlight();
-            tile.OnPlayerClicked = _onTileSelected;
+            tile.OnPlayerClicked = _onTileClicked;
+            usi = "";
+            _selectedPiece = empty;
         });
     }
 

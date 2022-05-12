@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WSprite: {fileID: 21300000, guid: a3956b77c84c56249a15fe447581566a, type: 3}
   BSprite: {fileID: 21300000, guid: 883a4447bc8829b40bae0196bea0a399, type: 3}
-  Name: Kight
+  Name: Night
   Value: 3
   movementOptions: 03000000
   Promotable: 1

@@ -18,7 +18,7 @@ public class DropController : MonoBehaviour
     [SerializeField]
     private ShogiPiece empty = null;
 
-    private ShogiPiece _selectedPiece = null;
+    public ShogiPiece WantsToDrop = null;
 
     // Is called only once and before the game starts, and before Start
     private void Awake()
@@ -53,6 +53,15 @@ public class DropController : MonoBehaviour
     public void Init(int[] enemyDroppable, int[] playerDroppable)
     {
 
+    }
+
+    public void ResetAll ()
+    {
+        for( int i = 0; i < _enemyDroppable.Length; i++)
+        {
+            Droppable victim = _enemyDroppable[i];
+            victim.InitDropAmount(0);
+        }
     }
 
     /// <summary>
@@ -96,12 +105,8 @@ public class DropController : MonoBehaviour
     /// <param name="droppablePiece"></param>
     public void playerWantsToDrop(ShogiPiece droppablePiece)
     {
-        if(_selectedPiece != empty)
-        {
-            _cancelDrop(new int2(0,0));
-        }
-        _selectedPiece = droppablePiece;
-        _highlightDroppableTiles(droppablePiece);
+        WantsToDrop = droppablePiece;
+        _gameController.sendReact("WantsToDrop", droppablePiece.name);
     }
 
     /// <summary>
@@ -232,17 +237,17 @@ public class DropController : MonoBehaviour
         // set player state
         tile.IsPlayerOwned = _gameController.IsPlayerTurn;
         // decrement pool
-        ManipulatePool(_gameController.IsPlayerTurn, _selectedPiece, -1);
+        ManipulatePool(_gameController.IsPlayerTurn, WantsToDrop, -1);
         // set piece down
-        tile.SetShogiPiece(_selectedPiece);
-        _selectedPiece = empty;
+        tile.SetShogiPiece(WantsToDrop);
+        WantsToDrop = empty;
         // turn is over
-        _gameController.SwitchSides();
+        //_gameController.SwitchSides();
     }
 
     private void _cancelDrop (int2 coord)
     {
-        _selectedPiece = null;
+        WantsToDrop = null;
         _gameController.ForAllTiles((Tile tile) =>
         {
             _gameController.ResetTileOnPlayerClicked(tile.Coordinates);

@@ -107,18 +107,7 @@ public class Tile : MonoBehaviour
 
     public void PromptForPromotion()
     {
-        if (_shogiPiece.Promotable && IsPlayerOwned == GameController.Instance.IsPlayerTurn)
-        {
-            _promotionPrompt.SetActive(true);
-            //_promotionPrompt.AddComponent<RectTransform>();
-            //_promotionPrompt.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 70);
-            //_promotionPrompt.transform.localScale = new Vector3(2, 2, 2);
-            //_promotionPrompt.transform.position = new Vector3(300, 200, 0);
-            //note can only click on the user promotion piece for it to register a click 
-        } else
-        {
-            GameController.Instance.SwitchSides();
-        }
+        _promotionPrompt.SetActive(true);
     }
 
     /// <summary>
@@ -129,8 +118,7 @@ public class Tile : MonoBehaviour
     /// </remarks>
     public void PromotePiece(bool willPromote)
     {
-        if(willPromote) SetShogiPiece(_shogiPiece.PromotedPiece);
         _promotionPrompt.SetActive(false);
-        GameController.Instance.SwitchSides();
+        GameController.Instance.SendPromotion(willPromote);
     }
 }
