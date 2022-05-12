@@ -69,6 +69,7 @@ public class Tile : MonoBehaviour
         // this.HighlightOverlay.enabled = true;
         Debug.Log("Highlighted " + Coordinates.x + ", " + Coordinates.y);
         Image.color = Color.green;
+        //if (IsPlayerOwned) { Image.color = Color.red; }
         this.IsHighlighted = true;
     }
 
@@ -81,7 +82,7 @@ public class Tile : MonoBehaviour
         this.IsHighlighted = false;
     }
 
-    public void GetSkin(string i)
+    public void SetSkin(string i)
     {
         x = i;
     }
@@ -161,6 +162,7 @@ public class Tile : MonoBehaviour
         if (IsHighlighted)
         {
             Image.color = Color.green;
+            
         } else
         {
             Image.color = Color.white;
